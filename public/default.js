@@ -1,37 +1,36 @@
-var tweetLocation = document.getElementById(tweet-list);
+var tweetLocation = document.getElementById('tweet-list');
 
-var follow = document.getElementById('btn-follow');
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/viet');
+xhr.send();
 
-follow.addEventListener('click', function() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/viet');
-  xhr.send();
+xhr.addEventListener('load', function(event) {
+  var user = JSON.parse(xhr.responseText);
+  console.log(user);
 
-  xhr.addEventListener('load', function(event) {
-    console.log(xhr.response);
-    console.log('');
-    console.log(xhr.responseText);
-  });
-})
-
-
+  for(var i = 0; i < user.tweets.length; i++) {
+    var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img);
+    newTweet(tweet);
+  }
+});
 
 
-function Tweet(name, handle, content, link) {
+function Tweet(name, handle, content, img) {
   this.name = name;
   this.handle = handle;
   this.content = content;
-  this.link = link||null;
+  this.img = img||'https://www.nonehub.com/images/defaultUserAvatar.jpg';
 }
 
-function newTweet() {
+function newTweet(tweet) {
   var tweetItem = document.createElement('li');
   tweetItem.className = 'list-group-item';
 
-  tweetContent(tweetItem);
+  tweetLocation.appendChild(tweetItem);
+  tweetContent(tweetItem, tweet);
 }
 
-function tweetContent(location) {
+function tweetContent(location, tweet) {
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -41,8 +40,10 @@ function tweetContent(location) {
   media.appendChild(mediaLeft);
 
   var mediaImg = document.createElement('img');
-  mediaImg.className = 'media-object';
+  mediaImg.className = 'media-object tweet-icon';
+  mediaImg.src = tweet.img;
   mediaLeft.appendChild(mediaImg);
+
 
   var mediaBody = document.createElement('div');
   mediaBody.className = 'media-body';
@@ -50,10 +51,13 @@ function tweetContent(location) {
 
   var tweetHandle = document.createElement('h5');
   tweetHandle.className = 'media-heading';
+  tweetHandle.textContent = tweet.handle;
   mediaBody.appendChild(tweetHandle);
 
   var tweetText = document.createElement('p');
   tweetText.className = 'tweet-text';
+  tweetText.textContent = tweet.content.text;
   mediaBody.appendChild(tweetText);
 
+  console.log(tweet.content);
 }
