@@ -1,0 +1,30 @@
+#profile-img {
+  height: 150px;
+  width: 150px;
+}
+
+#tweet-container {
+
+}
+
+.vspace1 {
+  margin-top: 10px;
+}
+
+.vspace2 {
+  margin-top: 25px;
+}
+
+.vspace3 {
+    margin-top: 50px;
+}
+
+.vspace4 {
+  margin-top: 100px;
+}
+
+.tweet {
+  font-size: 1.2em;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
