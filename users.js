@@ -9,18 +9,19 @@ function User(name, id, tag, handle, tweets, following, followers, img) {
   this.img = img;
 }
 
-function Tweet(id, text) {
+function Tweet(id, text, date) {
   this.id = id;
   this.text = text;
+  this.date = date;
 }
 
-var vietTweets = [new Tweet(1, 'Yay camp is over'), new Tweet(2, 'I am Viet'), new Tweet(3, 'OMG so awkard')];
+var vietTweets = [new Tweet(1, 'Yay camp is over', new Date('November 17, 1995 04:45:17')), new Tweet(2, 'I am Viet', new Date('March 19, 2016 09:15:01')), new Tweet(3, 'OMG so awkard', new Date(2016, 3, 29, 3, 24, 55))];
 
-var benTweets = [new Tweet(1, 'Sick life'), new Tweet(2, 'I am Ben'), new Tweet(3, '*incoherent mumbling*')];
+var benTweets = [new Tweet(1, 'Sick life'), new Tweet(2, 'I am Ben', new Date(2016, 3, 29, 12, 45)), new Tweet(3, '*incoherent mumbling*')];
 
-var nathanTweets = [new Tweet(1, 'I got this API thing'), new Tweet(2, 'I am Nathan'), new Tweet(3, 'This API sux')];
+var nathanTweets = [new Tweet(1, 'I got this API thing', new Date(2016, 3, 39, 9, 30)), new Tweet(2, 'I am Nathan', new Date(2016, 3, 29, 12, 45)), new Tweet(3, 'This API sux', new Date(2016, 3, 29, 2, 45))];
 
-var schlomoTweets = [new Tweet(1, 'Nathan is wrong'), new Tweet(2, 'I am Schlomo'), new Tweet(3, 'Stop bothering Viet.')];
+var schlomoTweets = [new Tweet(1, 'Nathan is wrong'), new Tweet(2, 'I am Schlomo', new Date(2016, 3, 29, 12, 45)), new Tweet(3, 'Stop bothering Viet.')];
 
 var viet = new User('Viet', 1, 'Camp was a lot different for me as a kid', 'viethle126', vietTweets, [], [], 'img/viet.png');
 

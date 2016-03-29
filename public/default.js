@@ -6,20 +6,35 @@ xhr.send();
 
 xhr.addEventListener('load', function(event) {
   var user = JSON.parse(xhr.responseText);
-  console.log(user);
+
+  clearTweets();
+
+  populateProfile(user);
 
   for(var i = 0; i < user.tweets.length; i++) {
-    var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img);
+    var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
+    console.log(user.tweets[i].date);
+    console.log(new Date() - user.tweets[i].date);
     newTweet(tweet);
   }
 });
 
+function populateProfile(user){
+  var profPic = document.getElementById('profile-img');
+  var username = document.getElementById('username');
+  var tagline = document.getElementById('tagline');
 
-function Tweet(name, handle, content, img) {
+  profPic.src = user.img;
+  username.textContent = user.name;
+  tagline.textContent = user.tagline;
+}
+
+function Tweet(name, handle, content, img, date) {
   this.name = name;
   this.handle = handle;
   this.content = content;
-  this.img = img||'https://www.nonehub.com/images/defaultUserAvatar.jpg';
+  this.img = img;
+  this.date = date;
 }
 
 function newTweet(tweet) {
@@ -58,6 +73,11 @@ function tweetContent(location, tweet) {
   tweetText.className = 'tweet-text';
   tweetText.textContent = tweet.content.text;
   mediaBody.appendChild(tweetText);
+}
 
-  console.log(tweet.content);
+function clearTweets() {
+  var tweets = document.getElementById('tweet-list');
+  while(tweets.firstChild) {
+    tweets.removeChild(tweets.firstChild);
+  }
 }
