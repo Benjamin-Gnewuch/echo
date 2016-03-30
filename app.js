@@ -8,7 +8,7 @@ app.use(express.static('./public'));
 
 var users = require('./users.js');
 var tweets = require('./tweets.js');
-console.log(tweets.allTweets);
+console.log(tweets.tweets());
 
 var benj = {name: 'ben', age: 26};
 
