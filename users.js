@@ -29,13 +29,13 @@ makeTweets(nathanTweets, 1, 50);
 var schlomoTweets = [new Tweet(0, 'Nathan is wrong', Faker.Date.recent(50))];
 makeTweets(schlomoTweets, 1, 50);
 
-var viet = new User('Viet', 1, 'Camp was a lot different for me as a kid', 'viethle126', vietTweets, [], [], 'img/viet.png');
+var viet = new User('Viet', 1, 'Camp was a lot different for me as a kid', 'viethle126', vietTweets, [2,3,4], [2,3,4], 'img/viet.png');
 
-var ben = new User('Ben', 2, 'Nothing to put here', 'bgnewuch', benTweets, [], [], 'img/ben.png');
+var ben = new User('Ben', 2, 'Nothing to put here', 'bgnewuch', benTweets, [1,3,4], [], 'img/ben.png');
 
-var nathan = new User('Nathan', 3, 'Treezrppl2', 'Treezrppl2', nathanTweets, [], [], 'img/nathan.png');
+var nathan = new User('Nathan', 3, 'Treezrppl2', 'Treezrppl2', nathanTweets, [1,2,4], [1,2,4], 'img/nathan.png');
 
-var schlomo = new User('Schlomo', 4, 'You speak, I skof', 'skofman', schlomoTweets, [], [], 'img/schlomo.png');
+var schlomo = new User('Schlomo', 4, 'You speak, I skof', 'skofman', schlomoTweets, [1,2,3], [1,2,3], 'img/schlomo.png');
 
 var users = {
   1: viet,

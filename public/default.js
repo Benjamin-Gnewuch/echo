@@ -24,6 +24,7 @@ function prepProfile(user) {
 
   populateProfile(user);
 
+  populateFollowing(user.following)
   for(var i = 0; i < user.tweets.length; i++) {
     console.log(user.tweets[i].date);
     var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
@@ -34,11 +35,45 @@ function prepProfile(user) {
 function populateProfile(user){
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
+  var handle = document.getElementById('handle');
   var tagline = document.getElementById('tagline');
 
   profPic.src = user.img;
   username.textContent = user.name;
+  handle.textContent = '@' + user.handle;
   tagline.textContent = user.tagline;
+}
+
+function populateFollowing(user) {
+  var location = document.getElementById('following');
+
+  var media = document.createElement('div');
+  media.className = 'media';
+  location.appendChild(media);
+
+  var mediaLeft = document.createElement('div');
+  mediaLeft.className = 'media-left media-middle';
+  media.appendChild(mediaLeft);
+
+  var mediaImg = document.createElement('img');
+  mediaImg.className = 'media-object smaller-icon img-rounded';
+  mediaImg.src = user.img;
+  mediaLeft.appendChild(mediaImg);
+
+
+  var mediaBody = document.createElement('div');
+  mediaBody.className = 'media-body';
+  media.appendChild(mediaBody);
+
+  var name = document.createElement('h4');
+  name.className = 'media-heading';
+  name.textContent = user.name;
+  mediaBody.appendChild(name);
+
+  var handle = document.createElement('small');
+  handle.className = 'media-heading';
+  handle.textContent = user.handle;
+  mediaBody.appendChild(handle);
 }
 
 function Tweet(name, handle, content, img, date) {
@@ -67,7 +102,7 @@ function tweetContent(location, tweet) {
   media.appendChild(mediaLeft);
 
   var mediaImg = document.createElement('img');
-  mediaImg.className = 'media-object tweet-icon';
+  mediaImg.className = 'media-object tweet-icon img-rounded';
   mediaImg.src = tweet.img;
   mediaLeft.appendChild(mediaImg);
 
@@ -76,16 +111,16 @@ function tweetContent(location, tweet) {
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
 
-  var tweetHandle = document.createElement('h4');
+  var tweetHandle = document.createElement('h5');
   tweetHandle.className = 'media-heading';
-  tweetHandle.textContent = tweet.handle;
+  tweetHandle.textContent = '@' + tweet.handle;
   mediaBody.appendChild(tweetHandle);
 
   var tweetDate = document.createElement('small');
   tweetDate.textContent = tweet.date;
   mediaBody.appendChild(tweetDate);
 
-  var tweetText = document.createElement('h5');
+  var tweetText = document.createElement('h4');
   tweetText.className = 'tweet-text';
   tweetText.textContent = tweet.content.text;
   mediaBody.appendChild(tweetText);
