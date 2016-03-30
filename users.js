@@ -22,11 +22,14 @@ function Tweet(id, text, date) {
 var vietTweets = [new Tweet(0, 'OMG so awkard', Faker.Date.recent(50))];
 makeTweets(vietTweets, 1, 50);
 
-var benTweets = [new Tweet(1, 'Sick life'), new Tweet(2, 'I am Ben', new Date(2016, 3, 29, 12, 45)), new Tweet(3, '*incoherent mumbling*')];
+var benTweets = [new Tweet(0, '*incoherent mumbling*', Faker.Date.recent(50))];
+makeTweets(benTweets, 1, 50);
 
-var nathanTweets = [new Tweet(1, 'I got this API thing', new Date(2016, 3, 39, 9, 30)), new Tweet(2, 'I am Nathan', new Date(2016, 3, 29, 12, 45)), new Tweet(3, 'This API sux', new Date(2016, 3, 29, 2, 45))];
+var nathanTweets = [new Tweet(0, 'This API sux', Faker.Date.recent(50))];
+makeTweets(nathanTweets, 1, 50);
 
-var schlomoTweets = [new Tweet(1, 'Nathan is wrong'), new Tweet(2, 'I am Schlomo', new Date(2016, 3, 29, 12, 45)), new Tweet(3, 'Stop bothering Viet.')];
+var schlomoTweets = [new Tweet(0, 'Nathan is wrong'), Faker.Date.recent(50))];
+makeTweets(schlomoTweets, 1, 50);
 
 var viet = new User('Viet', 1, 'Camp was a lot different for me as a kid', 'viethle126', vietTweets, [], [], 'img/viet.png');
 
@@ -41,7 +44,6 @@ var users = {viet, ben, nathan, schlomo};
 function makeTweets(user, id, num) {
   for(var i = 0; i < num; i++) {
     var temp = new Tweet(id+i, Faker.Lorem.sentence(), Faker.Date.recent(49));
-    console.log(temp.date);
     user.push(temp);
   }
 }
