@@ -4,6 +4,10 @@ var lineBreak = document.createElement('br');
 var userGlobal;
 getProfile(4, prepProfile);
 
+function myProfile() {
+
+}
+
 function getProfile(idNum, method) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
@@ -51,9 +55,13 @@ function populateProfile(user){
 function populateFollowing(user) {
   var location = document.getElementById('following');
 
+  var link = document.createElement('a');
+  location.appendChild(link);
+
   var media = document.createElement('div');
-  media.className = 'media';
-  location.appendChild(media);
+  media.className = 'media hoffset1';
+  link.appendChild(media);
+  media.dataset.id = user.id;
 
   var mediaLeft = document.createElement('div');
   mediaLeft.className = 'media-left media-middle';
@@ -88,7 +96,7 @@ function Tweet(name, handle, content, img, date) {
 }
 
 function generateTweet(tweet) {
-  var tweetElement = document.createElement('li');
+  var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item';
 
   tweetLocation.appendChild(tweetElement);
