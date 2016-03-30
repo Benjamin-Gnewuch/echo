@@ -37,7 +37,11 @@ var nathan = new User('Nathan', 3, 'Treezrppl2', 'Treezrppl2', nathanTweets, [],
 
 var schlomo = new User('Schlomo', 4, 'You speak, I skof', 'skofman', schlomoTweets, [], [], 'img/schlomo.png');
 
-var users = {viet, ben, nathan, schlomo};
+var users = {
+  1: viet,
+  2: ben,
+  3: nathan,
+  4: schlomo};
 
 function makeTweets(user, id, num) {
   for(var i = 0; i < num; i++) {

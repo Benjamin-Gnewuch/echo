@@ -1,7 +1,8 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
+
 var xhr = new XMLHttpRequest();
-xhr.open('GET', '/viet');
+xhr.open('GET', '/user/3');
 xhr.send();
 
 xhr.addEventListener('load', function(event) {

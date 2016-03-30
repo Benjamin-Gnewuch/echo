@@ -11,8 +11,10 @@ app.get('/', function(req, res) {
   res.sendFile(index.html)
 })
 
-app.get('/viet', function(req, res) {
-  res.send(users.viet);
+app.get('/user/:id', function(req, res) {
+  var id = (req.params.id);
+  console.log(req.params.id);
+  res.send(users[id]);
 });
 
-app.listen(8090);
+app.listen(8080);
