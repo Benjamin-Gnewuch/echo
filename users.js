@@ -1,3 +1,5 @@
+var Faker = require('Faker');
+
 function User(name, id, tag, handle, tweets, following, followers, img) {
   this.name = name;
   this.id = id;
@@ -15,7 +17,10 @@ function Tweet(id, text, date) {
   this.date = date;
 }
 
-var vietTweets = [new Tweet(1, 'Yay camp is over', new Date('November 17, 1995 04:45:17')), new Tweet(2, 'I am Viet', new Date('March 19, 2016 09:15:01')), new Tweet(3, 'OMG so awkard', new Date(2016, 3, 29, 3, 24, 55))];
+//var vietTweets = [new Tweet(1, 'Yay camp is over', new Date('November 17, 1995 04:45:17')), new Tweet(2, Faker.Lorem.sentence(), new Date('March 19, 2016 09:15:01')), new Tweet(3, 'OMG so awkard', new Date(2016, 3, 29, 3, 24, 55))];
+
+var vietTweets = [new Tweet(0, 'OMG so awkard', Faker.Date.recent(50))];
+makeTweets(vietTweets, 1, 50);
 
 var benTweets = [new Tweet(1, 'Sick life'), new Tweet(2, 'I am Ben', new Date(2016, 3, 29, 12, 45)), new Tweet(3, '*incoherent mumbling*')];
 
@@ -32,6 +37,14 @@ var nathan = new User('Nathan', 3, 'Treezrppl2', 'Treezrppl2', nathanTweets, [],
 var schlomo = new User('Schlomo', 4, 'You speak, I skof', 'skofman', schlomoTweets, [], [], 'img/schlomo.png');
 
 var users = {viet, ben, nathan, schlomo};
+
+function makeTweets(user, id, num) {
+  for(var i = 0; i < num; i++) {
+    var temp = new Tweet(id+i, Faker.Lorem.sentence(), Faker.Date.recent(49));
+    console.log(temp.date);
+    user.push(temp);
+  }
+}
 
 // User.prototype.addFollower = function(follower) {
 //   this.followers.push(follower);

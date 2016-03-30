@@ -12,9 +12,8 @@ xhr.addEventListener('load', function(event) {
   populateProfile(user);
 
   for(var i = 0; i < user.tweets.length; i++) {
-    var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
     console.log(user.tweets[i].date);
-    console.log(new Date() - user.tweets[i].date);
+    var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
     newTweet(tweet);
   }
 });
@@ -38,11 +37,11 @@ function Tweet(name, handle, content, img, date) {
 }
 
 function newTweet(tweet) {
-  var tweetItem = document.createElement('li');
-  tweetItem.className = 'list-group-item';
+  var tweetElement = document.createElement('li');
+  tweetElement.className = 'list-group-item';
 
-  tweetLocation.appendChild(tweetItem);
-  tweetContent(tweetItem, tweet);
+  tweetLocation.appendChild(tweetElement);
+  tweetContent(tweetElement, tweet);
 }
 
 function tweetContent(location, tweet) {
@@ -68,6 +67,7 @@ function tweetContent(location, tweet) {
   tweetHandle.className = 'media-heading';
   tweetHandle.textContent = tweet.handle;
   mediaBody.appendChild(tweetHandle);
+
 
   var tweetText = document.createElement('p');
   tweetText.className = 'tweet-text';
