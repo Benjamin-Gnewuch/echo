@@ -1,9 +1,10 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 
-getProfile(4);
+var userGlobal;
+getProfile(4, prepProfile);
 
-function getProfile(idNum) {
+function getProfile(idNum, method) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var id = {id: idNum};
@@ -12,21 +13,24 @@ function getProfile(idNum) {
   xhr.send(payload);
 
   xhr.addEventListener('load', function(event) {
-    console.log((xhr.responseText));
     var response = JSON.parse(xhr.responseText);
     var user = response.message;
-    prepProfile(user);
+    console.log(user);
+    userGlobal = user;
+
+    method(user);
   });
 }
 
 function prepProfile(user) {
   clearTweets();
-
   populateProfile(user);
 
-  populateFollowing(user.following)
+  for(var i = 0; i < user.following.length; i++) {
+    getProfile(user.following[i], populateFollowing);
+  }
+
   for(var i = 0; i < user.tweets.length; i++) {
-    console.log(user.tweets[i].date);
     var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
     generateTweet(tweet);
   }
@@ -60,7 +64,6 @@ function populateFollowing(user) {
   mediaImg.src = user.img;
   mediaLeft.appendChild(mediaImg);
 
-
   var mediaBody = document.createElement('div');
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
@@ -72,7 +75,7 @@ function populateFollowing(user) {
 
   var handle = document.createElement('small');
   handle.className = 'media-heading';
-  handle.textContent = user.handle;
+  handle.textContent = '@' + user.handle;
   mediaBody.appendChild(handle);
 }
 

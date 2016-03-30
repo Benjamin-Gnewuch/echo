@@ -7,6 +7,18 @@
 
 }
 
+.hoffset1 {
+  margin-left: 10px;
+}
+
+.hoffset2 {
+  margin-left: 25px;
+}
+
+.hoffset3 {
+  margin-left: 50px;
+}
+
 .vspace1 {
   margin-top: 10px;
 }
