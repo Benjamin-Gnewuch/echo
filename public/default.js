@@ -1,13 +1,25 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 
-var xhr = new XMLHttpRequest();
-xhr.open('GET', '/user/3');
-xhr.send();
+getProfile(4);
 
-xhr.addEventListener('load', function(event) {
-  var user = JSON.parse(xhr.responseText);
+function getProfile(idNum) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/getprofile');
+  var id = {id: idNum};
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var payload = JSON.stringify(id);
+  xhr.send(payload);
 
+  xhr.addEventListener('load', function(event) {
+    console.log((xhr.responseText));
+    var response = JSON.parse(xhr.responseText);
+    var user = response.message;
+    prepProfile(user);
+  });
+}
+
+function prepProfile(user) {
   clearTweets();
 
   populateProfile(user);
@@ -15,9 +27,9 @@ xhr.addEventListener('load', function(event) {
   for(var i = 0; i < user.tweets.length; i++) {
     console.log(user.tweets[i].date);
     var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
-    newTweet(tweet);
+    generateTweet(tweet);
   }
-});
+}
 
 function populateProfile(user){
   var profPic = document.getElementById('profile-img');
@@ -37,7 +49,7 @@ function Tweet(name, handle, content, img, date) {
   this.date = date;
 }
 
-function newTweet(tweet) {
+function generateTweet(tweet) {
   var tweetElement = document.createElement('li');
   tweetElement.className = 'list-group-item';
 
