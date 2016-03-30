@@ -1,5 +1,5 @@
 var tweetLocation = document.getElementById('tweet-list');
-
+var lineBreak = document.createElement('br');
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/viet');
 xhr.send();
@@ -63,13 +63,16 @@ function tweetContent(location, tweet) {
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
 
-  var tweetHandle = document.createElement('h5');
+  var tweetHandle = document.createElement('h4');
   tweetHandle.className = 'media-heading';
   tweetHandle.textContent = tweet.handle;
   mediaBody.appendChild(tweetHandle);
 
+  var tweetDate = document.createElement('small');
+  tweetDate.textContent = tweet.date;
+  mediaBody.appendChild(tweetDate);
 
-  var tweetText = document.createElement('p');
+  var tweetText = document.createElement('h5');
   tweetText.className = 'tweet-text';
   tweetText.textContent = tweet.content.text;
   mediaBody.appendChild(tweetText);
