@@ -1,10 +1,23 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 
-var userGlobal;
 //getProfile(4, prepProfile);
 
+var userCollection;
+getUsers(storeUsers);
 timeline();
+
+function getUsers(callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/users');
+  xhr.send();
+
+  xhr.addEventListener('load', function() {
+    var users = JSON.parse(xhr.responseText);
+    console.log(users);
+    callback(users);
+  });
+}
 
 function timeline() {
   var xhr = new XMLHttpRequest();
@@ -17,13 +30,28 @@ function timeline() {
   });
 }
 
+function storeUsers(users) {
+  userCollection = users;
+  console.log(userCollection);
+}
+
 function prepTimeline(tweets) {
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
-    var tweet = new Tweet(tweets[i].handle, tweets[i].text, tweets[i].date);
+    var user = matchUser(tweets[i]);
+
+    var tweet = new Tweet(user.name, tweets[i].handle, tweets[i].text, user.img, tweets[i].date);
     console.log(tweet);
     generateTweet(tweet);
+  }
+}
+
+function matchUser(tweet) {
+  for(var i = 0; i < userCollection.length; i++) {
+      if(userCollection[i].handle == tweet.handle) {
+        return userCollection[i];
+      }
   }
 }
 
@@ -104,17 +132,17 @@ function populateFollowing(user) {
   mediaBody.appendChild(handle);
 }
 
-function Tweet(handle, content, date) {
-  //this.name = name;
+function Tweet(name, handle, content, img, date) {
+  this.name = name;
   this.handle = handle;
   this.content = content;
-  //this.img = img;
+  this.img = img;
   this.date = date;
 }
 
 function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
-  tweetElement.className = 'list-group-item';
+  tweetElement.className = 'list-group-item vspace0';
 
   tweetLocation.appendChild(tweetElement);
   tweetContent(tweetElement, tweet);
@@ -131,13 +159,18 @@ function tweetContent(location, tweet) {
 
   var mediaImg = document.createElement('img');
   mediaImg.className = 'media-object tweet-icon img-rounded';
-  mediaImg.src = 'https://www.nonehub.com/images/defaultUserAvatar.jpg';
+  mediaImg.src = tweet.img;
   mediaLeft.appendChild(mediaImg);
 
 
   var mediaBody = document.createElement('div');
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
+
+  var tweetName = document.createElement('h5');
+  tweetName.className = 'media-heading';
+  tweetName.textContent = tweet.name;
+  mediaBody.appendChild(tweetName);
 
   var tweetHandle = document.createElement('h5');
   tweetHandle.className = 'media-heading';
