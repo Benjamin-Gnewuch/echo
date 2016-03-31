@@ -61,6 +61,8 @@ function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item vspace0';
 
+  tweetElement.dataset.type = 'tweet';
+  tweetElement.dataset.handle = tweet.handle;
   tweetLocation.appendChild(tweetElement);
   tweetContent(tweetElement, tweet);
 }
@@ -111,39 +113,72 @@ function clearTweets() {
   }
 }
 
+var follow = document.getElementById('btn-follow');
+
+follow.addEventListener('click', function(event) {
+  getProfile('@treezrppl2', prepProfile);
+});
+
+function prepProfile(user) {
+  clearTweets();
+  populateProfile(user);
+
+  // for(var i = 0; i < user.following.length; i++) {
+  //   getProfile(user.following[i], populateFollowing);
+  // }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/timeline');
+  xhr.send();
+
+  xhr.addEventListener('load', function() {
+    var tweets = JSON.parse(xhr.responseText);
+
+    var userTweets = [];
+    for(var i = 0; i < tweets.length; i++) {
+      if(tweets[i].handle == user.handle) {
+        userTweets.push(tweets[i]);
+      }
+    }
+
+    for(var i = userTweets.length-1; i >= 0; i--) {
+      var tweet = new Tweet(user.name, user.handle, userTweets[i].text, user.img, userTweets[i].date);
+      generateTweet(tweet);
+    }
+  });
+
+
+}
+
+function getProfile(handle, method) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/getprofile');
+  var handle = {handle: handle};
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var payload = (JSON.stringify(handle));
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function(event) {
+    var response = JSON.parse(xhr.responseText);
+    var user = response.message;
+
+    method(user);
+  });
+}
+
+function populateProfile(user){
+  var profPic = document.getElementById('profile-img');
+  var username = document.getElementById('username');
+  var handle = document.getElementById('handle');
+  var tagline = document.getElementById('tagline');
+
+  profPic.src = user.img;
+  username.textContent = user.name;
+  handle.textContent = user.handle;
+  tagline.textContent = user.tagline;
+}
+
 //////////////////////////////////////////////////////////////////////////////////
-
-//getProfile(4, prepProfile);
-
-// function prepProfile(user) {
-//   clearTweets();
-//   populateProfile(user);
-//
-//   for(var i = 0; i < user.following.length; i++) {
-//     getProfile(user.following[i], populateFollowing);
-//   }
-//
-//   for(var i = 0; i < user.tweets.length; i++) {
-//     var tweet = new Tweet(user.name, user.handle, user.tweets[i], user.img, user.tweets[i].date);
-//     generateTweet(tweet);
-//   }
-// }
-
-// function getProfile(idNum, method) {
-//   var xhr = new XMLHttpRequest();
-//   xhr.open('POST', '/getprofile');
-//   var id = {id: idNum};
-//   xhr.setRequestHeader('Content-Type', 'application/json');
-//   var payload = JSON.stringify(id);
-//   xhr.send(payload);
-//
-//   xhr.addEventListener('load', function(event) {
-//     var response = JSON.parse(xhr.responseText);
-//     var user = response.message;
-//
-//     method(user);
-//   });
-// }
 
 // function populateFollowing(user) {
 //   var location = document.getElementById('following');
@@ -178,16 +213,4 @@ function clearTweets() {
 //   handle.className = 'media-heading';
 //   handle.textContent = '@' + user.handle;
 //   mediaBody.appendChild(handle);
-// }
-
-// function populateProfile(user){
-//   var profPic = document.getElementById('profile-img');
-//   var username = document.getElementById('username');
-//   var handle = document.getElementById('handle');
-//   var tagline = document.getElementById('tagline');
-//
-//   profPic.src = user.img;
-//   username.textContent = user.name;
-//   handle.textContent = '@' + user.handle;
-//   tagline.textContent = user.tagline;
 // }
