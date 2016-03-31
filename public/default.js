@@ -2,29 +2,46 @@ var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 
 var userGlobal;
-getProfile(4, prepProfile);
+//getProfile(4, prepProfile);
 
-function myProfile() {
+timeline();
 
-}
-
-function getProfile(idNum, method) {
+function timeline() {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/getprofile');
-  var id = {id: idNum};
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  var payload = JSON.stringify(id);
-  xhr.send(payload);
+  xhr.open('GET', '/timeline');
+  xhr.send();
 
-  xhr.addEventListener('load', function(event) {
-    var response = JSON.parse(xhr.responseText);
-    var user = response.message;
-    console.log(user);
-    userGlobal = user;
-
-    method(user);
+  xhr.addEventListener('load', function() {
+    var tweets = JSON.parse(xhr.responseText);
+    prepTimeline(tweets);
   });
 }
+
+function prepTimeline(tweets) {
+  clearTweets();
+
+  for(var i = tweets.length-1; i >= 0; i--) {
+    var tweet = new Tweet(tweets[i].handle, tweets[i].text, tweets[i].date);
+    console.log(tweet);
+    generateTweet(tweet);
+  }
+}
+
+// function getProfile(idNum, method) {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open('POST', '/getprofile');
+//   var id = {id: idNum};
+//   xhr.setRequestHeader('Content-Type', 'application/json');
+//   var payload = JSON.stringify(id);
+//   xhr.send(payload);
+//
+//   xhr.addEventListener('load', function(event) {
+//     var response = JSON.parse(xhr.responseText);
+//     var user = response.message;
+//
+//     method(user);
+//   });
+// }
 
 function prepProfile(user) {
   clearTweets();
@@ -87,11 +104,11 @@ function populateFollowing(user) {
   mediaBody.appendChild(handle);
 }
 
-function Tweet(name, handle, content, img, date) {
-  this.name = name;
+function Tweet(handle, content, date) {
+  //this.name = name;
   this.handle = handle;
   this.content = content;
-  this.img = img;
+  //this.img = img;
   this.date = date;
 }
 
@@ -114,7 +131,7 @@ function tweetContent(location, tweet) {
 
   var mediaImg = document.createElement('img');
   mediaImg.className = 'media-object tweet-icon img-rounded';
-  mediaImg.src = tweet.img;
+  mediaImg.src = 'https://www.nonehub.com/images/defaultUserAvatar.jpg';
   mediaLeft.appendChild(mediaImg);
 
 
@@ -124,7 +141,7 @@ function tweetContent(location, tweet) {
 
   var tweetHandle = document.createElement('h5');
   tweetHandle.className = 'media-heading';
-  tweetHandle.textContent = '@' + tweet.handle;
+  tweetHandle.textContent = tweet.handle;
   mediaBody.appendChild(tweetHandle);
 
   var tweetDate = document.createElement('small');
@@ -133,7 +150,7 @@ function tweetContent(location, tweet) {
 
   var tweetText = document.createElement('h4');
   tweetText.className = 'tweet-text';
-  tweetText.textContent = tweet.content.text;
+  tweetText.textContent = tweet.content;
   mediaBody.appendChild(tweetText);
 }
 

@@ -3,8 +3,6 @@ var app = express();
 var tweets = require('./tweets.js');
 var tweetCollection = tweets;
 
-console.log(tweetCollection.tweets())
-
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
@@ -18,8 +16,8 @@ app.get('/timeline', function(req, res) {
   res.json(tweetCollection.tweets());
 });
 
-app.post('/getprofile', jsonParser, function(req, res) {
-  res.json({message: users[req.body.id]});
-});
+// app.post('/getprofile', jsonParser, function(req, res) {
+//   res.json({message: users[req.body.id]});
+// });
 
 app.listen(8080);
