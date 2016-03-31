@@ -113,10 +113,12 @@ function clearTweets() {
   }
 }
 
-var follow = document.getElementById('btn-follow');
+var bodyTag = document.getElementsByTagName('body')[0];
 
-follow.addEventListener('click', function(event) {
-  getProfile('@treezrppl2', prepProfile);
+bodyTag.addEventListener('click', function(event) {
+    if(event.target.dataset.type == 'tweet') {
+      getProfile(event.target.dataset.handle, prepProfile);
+    }
 });
 
 function prepProfile(user) {
