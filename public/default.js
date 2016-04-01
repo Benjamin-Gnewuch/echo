@@ -166,6 +166,10 @@ function handleButton(target) {
     pushUser(mainUser);
     getProfile(target.dataset.handle, populateProfile)
   }
+  else if(target.dataset.id == 'home') {
+    prepProfile(mainUser);
+    timeline();
+  }
 }
 
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets

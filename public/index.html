@@ -2,18 +2,37 @@
 <html lang='en-us'>
   <head>
     <title>Echo</title>
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   </head>
   <body>
+    <div><!--Navbar-->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" data-type="button" data-id="home" href="#">Home</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Nathan, @treezrppl2">
+                </div>
+                <button type="submit" class="btn btn-default conceal">Submit</button>
+              </form>
+              <a class="navbar-brand" data-type="button" data-id="log" href="#">Log In</a>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
     <div id="profile-header"><!--profile-->
       <div class="row"><!--profile header-->
         <div class="col-md-12 col-sm-12 col-xs-12 vspace2">
           <div class="row">
             <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1">
-              <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-thumbnail" alt="User profile picture" id="profile-img">
+              <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-rounded" alt="User profile picture" id="profile-img">
             </div>
             <div class="col-md-5 col-sm-5 col-xs-5">
               <div class="row">
