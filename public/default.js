@@ -1,7 +1,6 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 
-
 timeline();
 
 function timeline() {
@@ -113,13 +112,24 @@ function clearTweets() {
   }
 }
 
-var bodyTag = document.getElementsByTagName('body')[0];
-
-bodyTag.addEventListener('click', function(event) {
-    if(event.target.dataset.type == 'tweet') {
-      getProfile(event.target.dataset.handle, prepProfile);
+document.addEventListener('click', function(event) {
+  function findTarget(clicked) {
+    for(var target = clicked; target != document; target = target.parentNode) {
+      if(target.hasAttribute('data-type')) {
+        return target;
+      }
     }
+  }
+  var target = findTarget(event.target);
+
+  handleEvent(target)
 });
+
+function handleEvent(target) {
+  if(target.dataset.type == ('tweet' || 'user')) {
+    getProfile(target.dataset.handle, prepProfile);
+  }
+}
 
 function prepProfile(user) {
   clearTweets();
@@ -148,8 +158,6 @@ function prepProfile(user) {
       generateTweet(tweet);
     }
   });
-
-
 }
 
 function getProfile(handle, method) {
