@@ -12,10 +12,10 @@ function User(name, id, tag, handle, following, followers, img) {
 
 var userCollection = function users() {
   var users = [
-    new User('Viet', 1, 'Camp was a lot different for me as a kid', '@viethle126', [2,3,4], [2,3,4], 'img/viet.png'),
-    new User('Ben', 2, '*incoherent mumbling*', '@bgnewuch', [1,3,4], [1,3,4], 'img/ben.png'),
-    new User('Nathan', 3, 'Treezrppl2 guyz', '@treezrppl2', [1,2,4], [1,2,4], 'img/nathan.png'),
-    new User('Schlomo', 4, 'You speak, I skof', '@skofman', [1,2,3], [1,2,3], 'img/schlomo.png')
+    new User('Viet', 1, 'Camp was a lot different for me as a kid', '@viethle126', ['@bgnewuch', '@treezrppl2', '@skofman'], ['@bgnewuch', '@treezrppl2', '@skofman'], 'img/viet.png'),
+    new User('Ben', 2, '*incoherent mumbling*', '@bgnewuch', ['@viethle126', '@treezrppl2', '@skofman'], ['@viethle126', '@treezrppl2', '@skofman'], 'img/ben.png'),
+    new User('Nathan', 3, 'Treezrppl2 guyz', '@treezrppl2', ['@bgnewuch', '@viethle126', '@skofman'], ['@bgnewuch', '@viethle126', '@skofman'], 'img/nathan.png'),
+    new User('Schlomo', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126'], ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/schlomo.png')
   ];
 
   function getUsers() {

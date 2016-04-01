@@ -133,11 +133,12 @@ function handleEvent(target) {
 
 function prepProfile(user) {
   clearTweets();
+  clearFollowing();
   populateProfile(user);
 
-  // for(var i = 0; i < user.following.length; i++) {
-  //   getProfile(user.following[i], populateFollowing);
-  // }
+  for(var i = 0; i < user.following.length; i++) {
+    getProfile(user.following[i], populateFollowing);
+  }
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
@@ -188,39 +189,46 @@ function populateProfile(user){
   tagline.textContent = user.tagline;
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 
-// function populateFollowing(user) {
-//   var location = document.getElementById('following');
-//
-//   var link = document.createElement('a');
-//   location.appendChild(link);
-//
-//   var media = document.createElement('div');
-//   media.className = 'media hoffset1';
-//   link.appendChild(media);
-//   media.dataset.id = user.id;
-//
-//   var mediaLeft = document.createElement('div');
-//   mediaLeft.className = 'media-left media-middle';
-//   media.appendChild(mediaLeft);
-//
-//   var mediaImg = document.createElement('img');
-//   mediaImg.className = 'media-object smaller-icon img-rounded';
-//   mediaImg.src = user.img;
-//   mediaLeft.appendChild(mediaImg);
-//
-//   var mediaBody = document.createElement('div');
-//   mediaBody.className = 'media-body';
-//   media.appendChild(mediaBody);
-//
-//   var name = document.createElement('h4');
-//   name.className = 'media-heading';
-//   name.textContent = user.name;
-//   mediaBody.appendChild(name);
-//
-//   var handle = document.createElement('small');
-//   handle.className = 'media-heading';
-//   handle.textContent = '@' + user.handle;
-//   mediaBody.appendChild(handle);
-// }
+function populateFollowing(user) {
+  var location = document.getElementById('following');
+
+  var link = document.createElement('a');
+  location.appendChild(link);
+
+  var media = document.createElement('div');
+  media.className = 'media hoffset1 vspace2';
+  media.dataset.type = 'user';
+  link.appendChild(media);
+  media.dataset.handle = user.handle;
+
+  var mediaLeft = document.createElement('div');
+  mediaLeft.className = 'media-left media-middle';
+  media.appendChild(mediaLeft);
+
+  var mediaImg = document.createElement('img');
+  mediaImg.className = 'media-object smaller-icon img-rounded';
+  mediaImg.src = user.img;
+  mediaLeft.appendChild(mediaImg);
+
+  var mediaBody = document.createElement('div');
+  mediaBody.className = 'media-body';
+  media.appendChild(mediaBody);
+
+  var name = document.createElement('h4');
+  name.className = 'media-heading';
+  name.textContent = user.name;
+  mediaBody.appendChild(name);
+
+  var handle = document.createElement('small');
+  handle.className = 'media-heading';
+  handle.textContent = user.handle;
+  mediaBody.appendChild(handle);
+}
+
+function clearFollowing() {
+  var following = document.getElementById('following');
+  while(following.firstChild) {
+    following.removeChild(following.firstChild);
+  }
+}
