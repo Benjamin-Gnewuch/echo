@@ -5,12 +5,14 @@ var mainUser;
 timeline();
 getProfile('@bgnewuch', setMainUser);
 
+//Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
   mainUser = user;
 
   prepProfile(mainUser);
 }
 
+//Gets ALL tweets
 function timeline() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
@@ -22,6 +24,7 @@ function timeline() {
   });
 }
 
+//Calls clearTweets() and matches each tweet to it's author
 function prepTimeline(tweets) {
   clearTweets();
 
@@ -30,12 +33,14 @@ function prepTimeline(tweets) {
   }
 }
 
+//Creates a new tweet, combining data from tweets and user, calls generateTweet
 function makeTweet(tweet, user) {
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date);
 
   generateTweet(tweet);
 }
 
+//Gets users from backend, matches a user to the tweet, then calls callback
 function matchUser(tweet, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/users');
@@ -52,6 +57,7 @@ function matchUser(tweet, callback) {
   });
 }
 
+//Tweet constructor
 function Tweet(name, handle, content, img, date) {
   this.name = name;
   this.handle = handle;
@@ -60,6 +66,7 @@ function Tweet(name, handle, content, img, date) {
   this.date = date;
 }
 
+//Takes in a tweet, sets up location in DOM, then calls tweetContent
 function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item vspace0';
@@ -70,6 +77,7 @@ function generateTweet(tweet) {
   tweetContent(tweetElement, tweet);
 }
 
+//Creates a media object and fills it with a tweet's data, appends to the DOM
 function tweetContent(location, tweet) {
   var media = document.createElement('div');
   media.className = 'media';
@@ -110,6 +118,7 @@ function tweetContent(location, tweet) {
   mediaBody.appendChild(tweetText);
 }
 
+//Takes in the date from a tweet, and creates a Date object to be returned
 function setDate(date) {
   var newDate = new Date();
   newDate.setMonth(date.month, date.day);
@@ -119,6 +128,7 @@ function setDate(date) {
   return newDate;
 }
 
+//Clears all tweets in the DOM
 function clearTweets() {
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
@@ -139,6 +149,7 @@ document.addEventListener('click', function(event) {
   handleEvent(target)
 });
 
+//Handles events sent to it from Global Event Listener
 function handleEvent(target) {
   if(target.dataset.type == 'tweet' || target.dataset.type == 'user') {
     getProfile(target.dataset.handle, prepProfile);
@@ -148,6 +159,7 @@ function handleEvent(target) {
   }
 }
 
+//Specifically handles any button clicked
 function handleButton(target) {
   if(target.dataset.id == 'follow') {
     toggleFollowing(target.dataset.handle);
@@ -155,8 +167,9 @@ function handleButton(target) {
   }
 }
 
+//Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
+//calls getProfile and sets it each user the person is following to be populated
 function prepProfile(user) {
-
   clearTweets();
   clearFollowing();
   populateProfile(user);
@@ -165,10 +178,9 @@ function prepProfile(user) {
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
   }
-
-
 }
 
+//Gets all tweets, takes the ones posted by user, builds each tweet, and sends it to generateTweet
 function profileTweets(user) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
@@ -191,6 +203,7 @@ function profileTweets(user) {
   });
 }
 
+//Sends a handle to the backend to get the matching user, sends the user to the callback
 function getProfile(handle, method) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
@@ -207,6 +220,7 @@ function getProfile(handle, method) {
   });
 }
 
+//Takes a user, and puts their info into the profile header, calls checkFollowing
 function populateProfile(user){
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
@@ -221,6 +235,7 @@ function populateProfile(user){
   checkFollowing(user);
 }
 
+//Takes a user, and populates a location in the Following box in the DOM
 function populateFollowing(user) {
   var location = document.getElementById('following');
   location.className = 'list-group';
@@ -262,6 +277,7 @@ function populateFollowing(user) {
   mediaBody.appendChild(handle);
 }
 
+//Takes a handle, if user is being followed, unfollow, if not, then add to follow
 function toggleFollowing(handle) {
   for(var i = 0; i < mainUser.following.length; i++) {
     if(mainUser.following[i] == handle) {
@@ -273,6 +289,7 @@ function toggleFollowing(handle) {
   mainUser.following.push(handle);
 }
 
+//Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
   var follow = document.getElementById('btn-follow');
   follow.className = 'btn btn-primary vspace4';
@@ -290,6 +307,7 @@ function checkFollowing(user) {
   }
 }
 
+//Clears the DOM of all the users followed by current profile
 function clearFollowing() {
   var following = document.getElementById('following');
   while(following.firstChild) {
