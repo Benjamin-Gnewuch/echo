@@ -151,6 +151,7 @@ function handleEvent(target) {
 function handleButton(target) {
   if(target.dataset.id == 'follow') {
     toggleFollowing(target.dataset.handle);
+    getProfile(target.dataset.handle, populateProfile)
   }
 }
 
