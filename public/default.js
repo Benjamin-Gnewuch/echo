@@ -97,7 +97,6 @@ function tweetContent(location, tweet) {
   mediaImg.src = tweet.img;
   mediaLeft.appendChild(mediaImg);
 
-
   var mediaBody = document.createElement('div');
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
@@ -112,14 +111,27 @@ function tweetContent(location, tweet) {
   tweetHandle.textContent = tweet.handle;
   mediaBody.appendChild(tweetHandle);
 
+  var tweetTime = setDate(tweet.date);
+  console.log(tweetTime);
   var tweetDate = document.createElement('p');
-  tweetDate.textContent = tweet.date;
+  tweetDate.textContent = tweetTime.toDateString();
   mediaBody.appendChild(tweetDate);
 
   var tweetText = document.createElement('h4');
   tweetText.className = 'tweet-text';
   tweetText.textContent = tweet.content;
   mediaBody.appendChild(tweetText);
+}
+
+function setDate(date) {
+  console.log(date);
+  var newDate = new Date();
+  newDate.setMonth(date.month, date.day);
+  newDate.setYear(date.year);
+  newDate.setHours(date.hours, date.minutes)
+
+  console.log(newDate);
+  return newDate;
 }
 
 function clearTweets() {
@@ -157,6 +169,7 @@ function prepProfile(user) {
   clearTweets();
   clearFollowing();
   populateProfile(user);
+  profileTweets(user);
 
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
@@ -165,7 +178,7 @@ function prepProfile(user) {
 
 }
 
-function profileTweets() {
+function profileTweets(user) {
   console.log('profileTweets()');
 
   var xhr = new XMLHttpRequest();
@@ -260,7 +273,6 @@ function populateFollowing(user) {
   mediaBody.appendChild(newLine);
 
   var handle = document.createElement('span');
-  // handle.className = 'media-heading';
   handle.textContent = user.handle;
   mediaBody.appendChild(handle);
 }

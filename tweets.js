@@ -2,18 +2,18 @@ var faker = require('faker');
 
 var tweetCollection = function tweets() {
   var tweets = [
-    makeTweet('@skofman', "This is the first tweet", 'December 17, 1995 03:24:00'),
-    makeTweet('@viethle126', "This is the second tweet", 'February 28, 2001 05:15:17'),
-    makeTweet('@treezrppl2', "This is the third tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@viethle126', "This is the fourth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@skofman', "This is the fifth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@treezrppl2', "This is the sixth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@treezrppl2', "This is the seventh tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@viethle126', "This is the eighth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@skofman', "This is the ninth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@skofman', "This is the tenth tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@treezrppl2', "This is the eleventh tweet", 'July 21, 2010 01:22:13'),
-    makeTweet('@bgnewuch', "lkJSDFBlkjsbfkrbfaf", 'July 22, 2010 01:14:00'),
+    makeTweet('@skofman', 'This is the first tweet', makeDate(12, 17, 1995, 03, 24)),
+    makeTweet('@viethle126', 'This is the second tweet', makeDate(2, 28, 2001, 05, 15)),
+    makeTweet('@treezrppl2', 'This is the third tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@viethle126', 'This is the fourth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@skofman', 'This is the fifth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@treezrppl2', 'This is the sixth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@treezrppl2', 'This is the seventh tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@viethle126', 'This is the eighth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@skofman', 'This is the ninth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@skofman', 'This is the tenth tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@treezrppl2', 'This is the eleventh tweet', makeDate(7, 21, 2010, 01, 22)),
+    makeTweet('@bgnewuch', 'lkJSDFBlkjsbfkrbfaf', makeDate(7, 22, 2010, 01, 14))
   ];
 
   function getTweets() {
@@ -30,6 +30,16 @@ function makeTweet(handle, text, date) {
     handle: handle,
     text: text,
     date: date
+  }
+}
+
+function makeDate(month, day, year, hours, minutes) {
+  return {
+    month: month,
+    day: day,
+    year: year,
+    hours: hours,
+    minutes: minutes
   }
 }
 
