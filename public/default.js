@@ -6,15 +6,12 @@ timeline();
 getProfile('@bgnewuch', setMainUser);
 
 function setMainUser(user) {
-  console.log('setMainUser()');
-
   mainUser = user;
 
   prepProfile(mainUser);
 }
 
 function timeline() {
-  console.log('timeline()');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
   xhr.send();
@@ -26,8 +23,6 @@ function timeline() {
 }
 
 function prepTimeline(tweets) {
-  console.log('prepTimeline()');
-
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -36,16 +31,12 @@ function prepTimeline(tweets) {
 }
 
 function makeTweet(tweet, user) {
-  console.log('makeTweet()');
-
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date);
 
   generateTweet(tweet);
 }
 
 function matchUser(tweet, callback) {
-  console.log('matchUser()');
-
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/users');
   xhr.send();
@@ -70,8 +61,6 @@ function Tweet(name, handle, content, img, date) {
 }
 
 function generateTweet(tweet) {
-  console.log('generateTweet()');
-
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item vspace0';
 
@@ -82,8 +71,6 @@ function generateTweet(tweet) {
 }
 
 function tweetContent(location, tweet) {
-  console.log('tweetContent()');
-
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -112,7 +99,7 @@ function tweetContent(location, tweet) {
   mediaBody.appendChild(tweetHandle);
 
   var tweetTime = setDate(tweet.date);
-  console.log(tweetTime);
+  (tweetTime);
   var tweetDate = document.createElement('p');
   tweetDate.textContent = tweetTime.toDateString();
   mediaBody.appendChild(tweetDate);
@@ -124,19 +111,15 @@ function tweetContent(location, tweet) {
 }
 
 function setDate(date) {
-  console.log(date);
   var newDate = new Date();
   newDate.setMonth(date.month, date.day);
   newDate.setYear(date.year);
   newDate.setHours(date.hours, date.minutes)
 
-  console.log(newDate);
   return newDate;
 }
 
 function clearTweets() {
-  console.log('clearTweets()');
-
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
     tweets.removeChild(tweets.firstChild);
@@ -147,6 +130,7 @@ document.addEventListener('click', function(event) {
   function findTarget(clicked) {
     for(var target = clicked; target != document; target = target.parentNode) {
       if(target.hasAttribute('data-type')) {
+        console.log(target);
         return target;
       }
     }
@@ -156,15 +140,21 @@ document.addEventListener('click', function(event) {
 });
 
 function handleEvent(target) {
-  console.log('handleEvent()');
-
   if(target.dataset.type == 'tweet' || target.dataset.type == 'user') {
     getProfile(target.dataset.handle, prepProfile);
+  }
+  else if(target.dataset.type == 'button') {
+    handleButton(target);
+  }
+}
+
+function handleButton(target) {
+  if(target.dataset.id == 'follow') {
+    toggleFollowing(target.dataset.handle);
   }
 }
 
 function prepProfile(user) {
-  console.log('prepProfile()');
 
   clearTweets();
   clearFollowing();
@@ -179,8 +169,6 @@ function prepProfile(user) {
 }
 
 function profileTweets(user) {
-  console.log('profileTweets()');
-
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
   xhr.send();
@@ -203,8 +191,6 @@ function profileTweets(user) {
 }
 
 function getProfile(handle, method) {
-  console.log('getProfile()');
-
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var handle = {handle: handle};
@@ -221,8 +207,6 @@ function getProfile(handle, method) {
 }
 
 function populateProfile(user){
-  console.log('populateProfile()');
-
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
   var handle = document.getElementById('handle');
@@ -232,11 +216,11 @@ function populateProfile(user){
   username.textContent = user.name;
   handle.textContent = user.handle;
   tagline.textContent = user.tagline;
+
+  checkFollowing(user);
 }
 
 function populateFollowing(user) {
-  console.log('populateFollowing()');
-
   var location = document.getElementById('following');
   location.className = 'list-group';
 
@@ -277,9 +261,35 @@ function populateFollowing(user) {
   mediaBody.appendChild(handle);
 }
 
-function clearFollowing() {
-  console.log('clearFollowing()');
+function toggleFollowing(handle) {
+  for(var i = 0; i < mainUser.following.length; i++) {
+    if(mainUser.following[i] == handle) {
+      mainUser.following.splice(i,1);
 
+      return;
+    }
+  }
+  mainUser.following.push(handle);
+}
+
+function checkFollowing(user) {
+  var follow = document.getElementById('btn-follow');
+  follow.className = 'btn btn-primary vspace4';
+  follow.dataset.handle = user.handle;
+
+  var following = mainUser.following.toString();
+  if(following.includes(user.handle)) {
+    follow.textContent = 'Unfollow';
+  }
+  else if (user.handle == mainUser.handle) {
+    follow.className = 'btn btn-primary vspace4 conceal';
+  }
+  else {
+    follow.textContent = 'Follow';
+  }
+}
+
+function clearFollowing() {
   var following = document.getElementById('following');
   while(following.firstChild) {
     following.removeChild(following.firstChild);
