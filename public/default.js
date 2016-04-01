@@ -1,9 +1,20 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
+var mainUser;
 
 timeline();
+getProfile('@bgnewuch', setMainUser);
+
+function setMainUser(user) {
+  console.log('setMainUser()');
+
+  mainUser = user;
+
+  prepProfile(mainUser);
+}
 
 function timeline() {
+  console.log('timeline()');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
   xhr.send();
@@ -14,11 +25,9 @@ function timeline() {
   });
 }
 
-function storeUsers(users) {
-  userCollection = users;
-}
-
 function prepTimeline(tweets) {
+  console.log('prepTimeline()');
+
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -27,12 +36,16 @@ function prepTimeline(tweets) {
 }
 
 function makeTweet(tweet, user) {
+  console.log('makeTweet()');
+
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date);
 
   generateTweet(tweet);
 }
 
 function matchUser(tweet, callback) {
+  console.log('matchUser()');
+
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/users');
   xhr.send();
@@ -57,6 +70,8 @@ function Tweet(name, handle, content, img, date) {
 }
 
 function generateTweet(tweet) {
+  console.log('generateTweet()');
+
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item vspace0';
 
@@ -67,6 +82,8 @@ function generateTweet(tweet) {
 }
 
 function tweetContent(location, tweet) {
+  console.log('tweetContent()');
+
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -106,6 +123,8 @@ function tweetContent(location, tweet) {
 }
 
 function clearTweets() {
+  console.log('clearTweets()');
+
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
     tweets.removeChild(tweets.firstChild);
@@ -121,17 +140,20 @@ document.addEventListener('click', function(event) {
     }
   }
   var target = findTarget(event.target);
-
   handleEvent(target)
 });
 
 function handleEvent(target) {
-  if(target.dataset.type == ('tweet' || 'user')) {
+  console.log('handleEvent()');
+
+  if(target.dataset.type == 'tweet' || target.dataset.type == 'user') {
     getProfile(target.dataset.handle, prepProfile);
   }
 }
 
 function prepProfile(user) {
+  console.log('prepProfile()');
+
   clearTweets();
   clearFollowing();
   populateProfile(user);
@@ -139,6 +161,12 @@ function prepProfile(user) {
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
   }
+
+
+}
+
+function profileTweets() {
+  console.log('profileTweets()');
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
@@ -162,6 +190,8 @@ function prepProfile(user) {
 }
 
 function getProfile(handle, method) {
+  console.log('getProfile()');
+
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var handle = {handle: handle};
@@ -178,6 +208,8 @@ function getProfile(handle, method) {
 }
 
 function populateProfile(user){
+  console.log('populateProfile()');
+
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
   var handle = document.getElementById('handle');
@@ -189,21 +221,25 @@ function populateProfile(user){
   tagline.textContent = user.tagline;
 }
 
-
 function populateFollowing(user) {
+  console.log('populateFollowing()');
+
   var location = document.getElementById('following');
+  location.className = 'list-group';
 
   var link = document.createElement('a');
+  link.className = 'list-group-item following';
+  link.dataset.handle = user.handle;
+  link.dataset.type = 'user';
+
   location.appendChild(link);
 
   var media = document.createElement('div');
-  media.className = 'media hoffset1 vspace2';
-  media.dataset.type = 'user';
+  media.className = 'media hoffset1';
   link.appendChild(media);
-  media.dataset.handle = user.handle;
 
   var mediaLeft = document.createElement('div');
-  mediaLeft.className = 'media-left media-middle';
+  mediaLeft.className = 'media-left media-top';
   media.appendChild(mediaLeft);
 
   var mediaImg = document.createElement('img');
@@ -215,18 +251,23 @@ function populateFollowing(user) {
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
 
-  var name = document.createElement('h4');
-  name.className = 'media-heading';
+  var name = document.createElement('span');
+  name.className = 'vpsacenone';
   name.textContent = user.name;
   mediaBody.appendChild(name);
 
-  var handle = document.createElement('small');
-  handle.className = 'media-heading';
+  var newLine = document.createElement('br');
+  mediaBody.appendChild(newLine);
+
+  var handle = document.createElement('span');
+  // handle.className = 'media-heading';
   handle.textContent = user.handle;
   mediaBody.appendChild(handle);
 }
 
 function clearFollowing() {
+  console.log('clearFollowing()');
+
   var following = document.getElementById('following');
   while(following.firstChild) {
     following.removeChild(following.firstChild);

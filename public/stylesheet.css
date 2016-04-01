@@ -19,6 +19,11 @@
   margin-left: 50px;
 }
 
+.vspacenone {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .vspace0 {
   margin-top: 5px;
 }
@@ -43,6 +48,7 @@
   font-size: 1.2em;
   padding-top: 10px;
   padding-bottom: 10px;
+  cursor: pointer;
 }
 
 .tweet-icon {
@@ -57,4 +63,9 @@
 
 .conceal {
   visibility: hidden;
+}
+
+.following {
+  margin-bottom: 20px;
+  cursor: pointer;
 }

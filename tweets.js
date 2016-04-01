@@ -1,3 +1,5 @@
+var faker = require('faker');
+
 var tweetCollection = function tweets() {
   var tweets = [
     makeTweet('@skofman', "This is the first tweet", 'December 17, 1995 03:24:00'),
@@ -11,11 +13,13 @@ var tweetCollection = function tweets() {
     makeTweet('@skofman', "This is the ninth tweet", 'July 21, 2010 01:22:13'),
     makeTweet('@skofman', "This is the tenth tweet", 'July 21, 2010 01:22:13'),
     makeTweet('@treezrppl2', "This is the eleventh tweet", 'July 21, 2010 01:22:13'),
+    makeTweet('@bgnewuch', "lkJSDFBlkjsbfkrbfaf", 'July 22, 2010 01:14:00'),
   ];
 
   function getTweets() {
     return tweets;
   }
+
   return {
     tweets: getTweets
   }

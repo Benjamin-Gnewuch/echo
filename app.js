@@ -18,10 +18,8 @@ app.get('/users', function(req, res) {
 })
 
 app.post('/getprofile', jsonParser, function(req, res) {
-  console.log(req.body);
   var users = userCollection.users();
   for(var i = 0; i < users.length; i++) {
-    console.log(users[i].handle);
     if(req.body.handle == users[i].handle) {
       res.json({message: users[i]});
     }
