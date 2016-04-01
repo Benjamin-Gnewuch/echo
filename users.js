@@ -22,8 +22,22 @@ var userCollection = function users() {
     return users;
   }
 
+  function changeUser(newUser) {
+    for(var i = 0; i < users.length; i++) {
+      if(users[i].handle == newUser.handle) {
+        users[i] = newUser;
+        console.log('User File Modified');
+        return users;
+      }
+    }
+    console.log('New User Added');
+    users.push(newUser);
+    return users;
+  }
+
   return {
-    users: getUsers
+    users: getUsers,
+    change: changeUser
   }
 }
 

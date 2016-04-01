@@ -163,6 +163,7 @@ function handleEvent(target) {
 function handleButton(target) {
   if(target.dataset.id == 'follow') {
     toggleFollowing(target.dataset.handle);
+    pushUser(mainUser);
     getProfile(target.dataset.handle, populateProfile)
   }
 }
@@ -218,6 +219,21 @@ function getProfile(handle, method) {
 
     method(user);
   });
+}
+
+//Takes a user and sends them to the backend to update database
+function pushUser(user) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/pushuser');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var payload = JSON.stringify(user);
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    var response = JSON.parse(xhr.responseText);
+    var message = response.message;
+    console.log(message);
+  })
 }
 
 //Takes a user, and puts their info into the profile header, calls checkFollowing
@@ -282,7 +298,6 @@ function toggleFollowing(handle) {
   for(var i = 0; i < mainUser.following.length; i++) {
     if(mainUser.following[i] == handle) {
       mainUser.following.splice(i,1);
-
       return;
     }
   }

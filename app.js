@@ -15,7 +15,7 @@ app.get('/timeline', function(req, res) {
 
 app.get('/users', function(req, res) {
   res.json(userCollection.users());
-})
+});
 
 app.post('/getprofile', jsonParser, function(req, res) {
   var users = userCollection.users();
@@ -24,6 +24,10 @@ app.post('/getprofile', jsonParser, function(req, res) {
       res.json({message: users[i]});
     }
   }
-})
+});
+
+app.post('/pushuser', jsonParser, function(req, res) {
+  res.send(userCollection.change(req.body));
+});
 
 app.listen(8080);
