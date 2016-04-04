@@ -77,7 +77,7 @@ function Tweet(name, handle, content, img, date) {
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
 function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
-  tweetElement.className = 'list-group-item tweet vspace0';
+  tweetElement.className = 'list-group-item tweet background';
 
   tweetElement.dataset.type = 'tweet';
   tweetElement.dataset.handle = tweet.handle;
@@ -115,7 +115,6 @@ function tweetContent(location, tweet) {
   mediaBody.appendChild(tweetHandle);
 
   var tweetTime = setDate(tweet.date);
-  (tweetTime);
   var tweetDate = document.createElement('p');
   tweetDate.textContent = tweetTime.toDateString();
   mediaBody.appendChild(tweetDate);
@@ -198,10 +197,13 @@ function handleButton(target) {
   else if(target.dataset.id == 'login-submit') {
     login();
   }
-  else if(target.dataset.id == "log") {
+  else if(target.dataset.id == 'log') {
     if(target.textContent == 'Log Out') {
       logout();
     }
+  }
+  else if(target.dataset.id == 'new-shout') {
+    console.log('NEW SHOUT!');
   }
 }
 
@@ -246,6 +248,7 @@ function hideModal() {
   modal.className = 'modal fade';
   var modalFade = document.getElementsByClassName('modal-backdrop')[0];
   modalFade.className = '';
+  modal.style = "display:none";
 }
 
 function logout() {
