@@ -1,6 +1,8 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
+var loginSubmit = document.getElementById('login-submit');
 var mainUser;
+var loggedin = true;
 
 timeline();
 getProfile('@bgnewuch', setMainUser);
@@ -23,6 +25,8 @@ function timeline() {
     prepTimeline(tweets);
   });
 }
+
+
 
 //Calls clearTweets() and matches each tweet to it's author
 function prepTimeline(tweets) {
@@ -69,7 +73,7 @@ function Tweet(name, handle, content, img, date) {
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
 function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
-  tweetElement.className = 'list-group-item vspace0';
+  tweetElement.className = 'list-group-item tweet vspace0';
 
   tweetElement.dataset.type = 'tweet';
   tweetElement.dataset.handle = tweet.handle;
@@ -136,6 +140,12 @@ function clearTweets() {
   }
 }
 
+loginSubmit.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  login();
+})
+
 document.addEventListener('click', function(event) {
   function findTarget(clicked) {
     for(var target = clicked; target != document; target = target.parentNode) {
@@ -170,6 +180,63 @@ function handleButton(target) {
     prepProfile(mainUser);
     timeline();
   }
+  else if(target.dataset.id == 'log') {
+    if(loggedin) {
+      logout();
+    }
+    else {
+      login();
+    }
+  }
+}
+
+//Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
+function login() {
+  console.log('Login Called');
+  var handle = document.getElementById('login-handle').value;
+  var pw = document.getElementById('login-pw').value;
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/authorize');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var data = {handle: handle, pw: pw};
+  var payload = JSON.stringify(data);
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    var response = JSON.parse(xhr.responseText);
+    var message = response.message;
+
+    if (message == 404) {
+      console.log(message);
+    }
+    else if (message == 401) {
+      console.log(message);
+    }
+    else {
+      setMainUser(message);
+      console.log(mainUser);
+      toggleLoggedIn();
+      timeline();
+    }
+  });
+}
+
+function logout() {
+  mainUser = {};
+  toggleLoggedIn();
+}
+
+function toggleLoggedIn() {
+  var loginButton = document.getElementById('login-btn');
+  if(loggedin) {
+    loggedin = false;
+    loginButton.textContent = 'Log Out';
+  }
+  else {
+    loggedin = true;
+    loginButton.textContent = 'Log In';
+  }
+  console.log(mainUser);
 }
 
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
