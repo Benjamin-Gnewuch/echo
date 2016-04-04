@@ -26,8 +26,6 @@ function timeline() {
   });
 }
 
-
-
 //Calls clearTweets() and matches each tweet to it's author
 function prepTimeline(tweets) {
   clearTweets();
@@ -180,7 +178,7 @@ function handleButton(target) {
     prepProfile(mainUser);
     timeline();
   }
-  else if(target.dataset.id == 'log') {
+  else if(target.dataset.id == 'login-submit') {
     if(loggedin) {
       logout();
     }
@@ -192,7 +190,6 @@ function handleButton(target) {
 
 //Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
 function login() {
-  console.log('Login Called');
   var handle = document.getElementById('login-handle').value;
   var pw = document.getElementById('login-pw').value;
   var xhr = new XMLHttpRequest();
@@ -214,11 +211,20 @@ function login() {
     }
     else {
       setMainUser(message);
-      console.log(mainUser);
+      hideModal();
       toggleLoggedIn();
       timeline();
     }
   });
+}
+
+function hideModal() {
+  var body = document.querySelector('body');
+  body.className = '';
+  var modal = document.getElementById('login-modal');
+  modal.className = 'modal fade';
+  var modalFade = document.getElementsByClassName('modal-backdrop')[0];
+  modalFade.className = '';
 }
 
 function logout() {
@@ -230,13 +236,13 @@ function toggleLoggedIn() {
   var loginButton = document.getElementById('login-btn');
   if(loggedin) {
     loggedin = false;
-    loginButton.textContent = 'Log Out';
+    loginButton.textContent = 'Log In';
   }
   else {
     loggedin = true;
-    loginButton.textContent = 'Log In';
+    loginButton.textContent = 'Log Out';
   }
-  console.log(mainUser);
+  //console.log(mainUser);
 }
 
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
@@ -303,7 +309,6 @@ function pushUser(user) {
   xhr.addEventListener('load', function() {
     var response = JSON.parse(xhr.responseText);
     var message = response.message;
-    console.log(message);
   })
 }
 

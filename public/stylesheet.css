@@ -6,6 +6,10 @@
   background-color: white;
 }
 
+.hide {
+  display: none;
+}
+
 #profile-header {
   margin-top: -20px;
 }

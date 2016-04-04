@@ -3,8 +3,10 @@
   <head>
     <title>Echo</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <script src="http://code.jquery.com/jquery-1.12.2.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   </head>
   <body>
     <div><!--Navbar-->
@@ -21,57 +23,94 @@
                 </div>
                 <button type="submit" class="btn btn-default conceal">Submit</button>
               </form>
-              <a class="navbar-brand" data-type="button" data-id="log" href="#">Log In</a>
+              <a class="navbar-brand" id="login-btn" data-type="button" data-id="log" data-toggle="modal" data-target="#login-modal" href="#">Log In</a>
             </ul>
           </div>
         </div>
       </nav>
+
+
+      <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Enter Credentials</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="login-handle">Handle</label>
+                  <input type="name" class="form-control" id="login-handle" placeholder="@handle">
+                </div>
+                <div class="form-group">
+                  <label for="login-pw">Password</label>
+                  <input type="password" class="form-control" id="login-pw" placeholder="Password">
+                </div>
+              </form>      </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" id="login-submit" data-type="button" data-id="login-submit" class="btn btn-primary">Log In</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="profile-header"><!--profile-->
-      <div class="row"><!--profile header-->
-        <div class="col-md-12 col-sm-12 col-xs-12 vspace2">
-          <div class="row">
-            <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1">
-              <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-rounded" alt="User profile picture" id="profile-img">
-            </div>
-            <div class="col-md-5 col-sm-5 col-xs-5">
-              <div class="row">
-                <h1 id="username">You</h1>
-                <h3 id="handle">@you</h3>
-              </div>
-              <div class="row">
-                <h5 id="tagline">The first user</h5>
-              </div>
-            </div>
-            <div class="col-md-1 col-sm-1 col-xs-1 text-center">
-              <button type="button" id="btn-follow" class="btn btn-primary vspace4" data-type="button" data-handle="@bgnewuch" data-id="follow">Follow</button>
-            </div>
-          </div>
-        </div>
+
+    <div id="landing-page"><!--Landing-->
+      <div class="row">
+
       </div>
-      <hr>
     </div>
-    <div class="row">
-      <div class="col-md-3 col-sm-3 hoffset3"><!--profile info-->
-        <div class="container-fluid">
-          <div class="panel panel-default">
-            <div class="panel-heading text-center">
-              <h5>Following</h5>
-            </div>
-            <div id="following" class="panel-body">
+
+    <div id="profile-page" class="hide">
+      <div id="profile-header"><!--profile-->
+        <div class="row"><!--profile header-->
+          <div class="col-md-12 col-sm-12 col-xs-12 vspace2">
+            <div class="row">
+              <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1">
+                <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-rounded" alt="User profile picture" id="profile-img">
+              </div>
+              <div class="col-md-5 col-sm-5 col-xs-5">
+                <div class="row">
+                  <h1 id="username">You</h1>
+                  <h3 id="handle">@you</h3>
+                </div>
+                <div class="row">
+                  <h5 id="tagline">The first user</h5>
+                </div>
+              </div>
+              <div class="col-md-1 col-sm-1 col-xs-1 text-center">
+                <button type="button" id="btn-follow" class="btn btn-primary vspace4" data-type="button" data-handle="@bgnewuch" data-id="follow">Follow</button>
+              </div>
             </div>
           </div>
         </div>
+        <hr>
       </div>
-      <div class="col-md-6 col-sm-6">
-        <div class="container-fluid" id="tweet-container">
-          <div class="list-group" id="tweet-list">
+      <div class="row">
+        <div class="col-md-3 col-sm-3 hoffset3"><!--profile info-->
+          <div class="container-fluid">
+            <div class="panel panel-default">
+              <div class="text-center">
+                <h5>Following</h5>
+              </div>
+              <div id="following" class="panel-body">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1"><!--Trending-->
+        <div class="col-md-6 col-sm-6">
+          <div class="container-fluid" id="tweet-container">
+            <div class="list-group" id="tweet-list">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1"><!--Trending-->
+        </div>
       </div>
     </div>
     <script src="/default.js"></script>
+
   </body>
 </html>
