@@ -1,11 +1,13 @@
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
-var mainUser;
-var loggedin = true;
+var landingPage = document.getElementById('landing-page');
+var profilePage = document.getElementById('profile-page');
 
-timeline();
-getProfile('@bgnewuch', setMainUser);
+var mainUser;
+var loggedin = false;
+
+//timeline();
 
 //Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
@@ -16,6 +18,8 @@ function setMainUser(user) {
 
 //Gets ALL tweets
 function timeline() {
+  console.log('timeline');
+
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
   xhr.send();
@@ -28,6 +32,8 @@ function timeline() {
 
 //Calls clearTweets() and matches each tweet to it's author
 function prepTimeline(tweets) {
+  console.log('prepTimeline');
+
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -132,6 +138,8 @@ function setDate(date) {
 
 //Clears all tweets in the DOM
 function clearTweets() {
+  console.log('clearTweets');
+
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
     tweets.removeChild(tweets.firstChild);
@@ -159,6 +167,8 @@ document.addEventListener('click', function(event) {
 
 //Handles events sent to it from Global Event Listener
 function handleEvent(target) {
+  console.log('handleEvent');
+
   if(target.dataset.type == 'tweet' || target.dataset.type == 'user') {
     getProfile(target.dataset.handle, prepProfile);
   }
@@ -169,27 +179,36 @@ function handleEvent(target) {
 
 //Specifically handles any button clicked
 function handleButton(target) {
+  console.log('handleButton');
+
   if(target.dataset.id == 'follow') {
     toggleFollowing(target.dataset.handle);
     pushUser(mainUser);
     getProfile(target.dataset.handle, populateProfile)
   }
   else if(target.dataset.id == 'home') {
-    prepProfile(mainUser);
-    timeline();
-  }
-  else if(target.dataset.id == 'login-submit') {
     if(loggedin) {
-      logout();
+      prepProfile(mainUser);
+      timeline();
     }
     else {
-      login();
+      show(landingPage);
+    }
+  }
+  else if(target.dataset.id == 'login-submit') {
+    login();
+  }
+  else if(target.dataset.id == "log") {
+    if(target.textContent == 'Log Out') {
+      logout();
     }
   }
 }
 
 //Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
 function login() {
+  console.log('login');
+
   var handle = document.getElementById('login-handle').value;
   var pw = document.getElementById('login-pw').value;
   var xhr = new XMLHttpRequest();
@@ -219,6 +238,8 @@ function login() {
 }
 
 function hideModal() {
+  console.log('hideModal');
+
   var body = document.querySelector('body');
   body.className = '';
   var modal = document.getElementById('login-modal');
@@ -228,19 +249,26 @@ function hideModal() {
 }
 
 function logout() {
+  console.log('logout');
+
   mainUser = {};
   toggleLoggedIn();
+  show(landingPage);
 }
 
 function toggleLoggedIn() {
+  console.log('toggleLoggedIn');
+
   var loginButton = document.getElementById('login-btn');
   if(loggedin) {
     loggedin = false;
     loginButton.textContent = 'Log In';
+    loginButton.dataset.toggle = 'modal';
   }
   else {
     loggedin = true;
     loginButton.textContent = 'Log Out';
+    loginButton.dataset.toggle = '';
   }
   //console.log(mainUser);
 }
@@ -248,7 +276,10 @@ function toggleLoggedIn() {
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
 //calls getProfile and sets it each user the person is following to be populated
 function prepProfile(user) {
+  console.log('prepProfile');
+
   clearTweets();
+  show(profilePage);
   clearFollowing();
   populateProfile(user);
   profileTweets(user);
@@ -260,6 +291,8 @@ function prepProfile(user) {
 
 //Gets all tweets, takes the ones posted by user, builds each tweet, and sends it to generateTweet
 function profileTweets(user) {
+  console.log('profileTweets');
+
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/timeline');
   xhr.send();
@@ -283,6 +316,7 @@ function profileTweets(user) {
 
 //Sends a handle to the backend to get the matching user, sends the user to the callback
 function getProfile(handle, method) {
+  console.log('getProfile');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var handle = {handle: handle};
@@ -403,5 +437,32 @@ function clearFollowing() {
   var following = document.getElementById('following');
   while(following.firstChild) {
     following.removeChild(following.firstChild);
+  }
+}
+
+function show(page) {
+  var pages = [landingPage, profilePage];
+  for (var i = 0; i < pages.length; i++) {
+    if (pages[i].id == page.id) {
+      pages.splice(i,1);
+    }
+  }
+  var classes = page.className.split(' ');
+  if (classes.indexOf('hide') > -1) {
+    var location = classes.indexOf('hide');
+    classes.splice(location, 1);
+    page.className = classes.join(' ');
+  }
+
+  hide(pages);
+}
+
+function hide(pages) {
+  for (var i = 0; i < pages.length; i++) {
+    var classes = pages[i].className.split(' ');
+    if (classes.indexOf('hide') === -1) {
+      classes.push('hide');
+      pages[i].className = classes.join(' ');
+    }
   }
 }
