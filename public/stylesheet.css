@@ -1,10 +1,18 @@
+.background {
+  background-color: #f8f8f8;
+}
+
+.background-white {
+  background-color: white;
+}
+
+#profile-header {
+  margin-top: -20px;
+}
+
 #profile-img {
   height: 150px;
   width: 150px;
-}
-
-#tweet-container {
-
 }
 
 .hoffset1 {
@@ -17,6 +25,10 @@
 
 .hoffset3 {
   margin-left: 50px;
+}
+
+.hoffset4 {
+  margin-left: 75px;
 }
 
 .vspacenone {
