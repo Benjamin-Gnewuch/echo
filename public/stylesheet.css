@@ -22,10 +22,6 @@
   display: none;
 }
 
-#landing-page {
-  height: 100%;
-}
-
 #profile-header {
   margin-top: -20px;
 }
@@ -33,6 +29,18 @@
 #profile-img {
   height: 150px;
   width: 150px;
+}
+
+#new-shout {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 18px;
+}
+
+#shout-submit {
+  margin-bottom: 20px;
+  width: 30%;
 }
 
 .hoffset1 {
@@ -98,6 +106,5 @@
 }
 
 .following {
-  margin-bottom: 20px;
   cursor: pointer;
 }

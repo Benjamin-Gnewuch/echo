@@ -91,7 +91,7 @@
       <div class="row">
         <div class="col-md-3 col-sm-3 hoffset3"><!--profile info-->
           <div class="container-fluid">
-            <div class="panel panel-default">
+            <div class="panel panel-default vspace3">
               <div class="text-center">
                 <h5>Following</h5>
               </div>
@@ -101,6 +101,19 @@
           </div>
         </div>
         <div class="col-md-6 col-sm-6">
+          <div class="text-center" id="new-shout">
+            <button id="new-shout-btn" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#newShoutInput" aria-expanded="false" aria-controls="collapseExample">
+              New Shout
+            </button>
+            <div class="collapse vspace1" id="newShoutInput">
+              <textarea class="form-control" rows="3" placeholder="Your shout here..."></textarea>
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <button type="submit" class="btn btn-primary vspace0" id="shout-submit">Shout</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="container-fluid" id="tweet-container">
             <div class="list-group" id="tweet-list">
             </div>
