@@ -27,13 +27,14 @@ app.post('/getprofile', jsonParser, function(req, res) {
 });
 
 app.post('/pushuser', jsonParser, function(req, res) {
-  console.log(req.body);
   res.send(userCollection.change(req.body));
 });
 
+app.post('/pushtweet', jsonParser, function(req, res) {
+  res.send(tweetCollection.addTweet(req.body));
+});
+
 app.post('/authorize', jsonParser, function(req, res) {
-  console.log(req.body);
-  console.log(userCollection.authorize(req.body));
   res.send({message: userCollection.authorize(req.body)});
 })
 

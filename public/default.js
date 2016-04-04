@@ -202,9 +202,41 @@ function handleButton(target) {
       logout();
     }
   }
-  else if(target.dataset.id == 'new-shout') {
-    console.log('NEW SHOUT!');
+  else if(target.dataset.id == 'shout-submit') {
+    shout();
+    setTimeout(timeline, 1000);
   }
+}
+
+function shout() {
+  var newShout = document.getElementById('new-shout-text').value;
+  if(newShout != "") {
+    var time = new Date();
+
+    var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes())
+    console.log(time);
+
+     var shoutToSend = {
+       handle: mainUser.handle,
+       text: newShout,
+       date: date
+     }
+     pushTweet(shoutToSend);
+  }
+}
+
+function pushTweet(tweet) {
+  console.log(tweet);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/pushtweet');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var payload = JSON.stringify(tweet);
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    var response = JSON.parse(xhr.responseText);
+    var message = response.message;
+  });
 }
 
 //Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
@@ -346,7 +378,7 @@ function pushUser(user) {
   xhr.addEventListener('load', function() {
     var response = JSON.parse(xhr.responseText);
     var message = response.message;
-  })
+  });
 }
 
 //Takes a user, and puts their info into the profile header, calls checkFollowing
@@ -467,5 +499,15 @@ function hide(pages) {
       classes.push('hide');
       pages[i].className = classes.join(' ');
     }
+  }
+}
+
+function makeDate(month, day, year, hours, minutes) {
+  return {
+    month: month,
+    day: day,
+    year: year,
+    hours: hours,
+    minutes: minutes
   }
 }

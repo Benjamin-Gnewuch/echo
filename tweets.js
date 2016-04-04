@@ -20,9 +20,19 @@ var tweetCollection = function tweets() {
     return tweets;
   }
 
-  return {
-    tweets: getTweets
+  function addTweet(tweet) {
+    var newTweet = makeTweet(tweet.handle, tweet.text, tweet.date);
+    tweets.push(newTweet);
+    console.log('Tweet Added');
+    console.log(tweets);
+    return tweets;
   }
+
+  return {
+    tweets: getTweets,
+    addTweet: addTweet
+  }
+
 }
 
 function makeTweet(handle, text, date) {
