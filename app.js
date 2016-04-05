@@ -30,6 +30,19 @@ app.post('/pushuser', jsonParser, function(req, res) {
   res.send(userCollection.change(req.body));
 });
 
+app.post('/updatefavorite', jsonParser, function(req, res) {
+  console.log(req.body);
+  var tweets;
+  if(req.body.direction == 'increase') {
+    tweets = tweetCollection.incrementFavorite(req.body.id);
+  }
+  else {
+    tweets = tweetCollection.decrementFavorite(req.body.id);
+  }
+
+  res.json({message: tweets});
+})
+
 app.post('/pushtweet', jsonParser, function(req, res) {
   res.send(tweetCollection.addTweet(req.body));
 });

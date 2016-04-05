@@ -290,10 +290,12 @@ function favorite(icon) {
     mainUser.favorites.sort(function(a,b) {
       return a-b;
     });
+    updateTweet('increase', icon.dataset.tweetid);
   }
   else {
     star.className = 'fa fa-star-o fa-lg';
     unfavorite(icon.dataset.tweetid);
+    updateTweet('decrease', icon.dataset.tweetid);
   }
   pushUser(mainUser);
 }
@@ -336,6 +338,21 @@ function collapseShout() {
 
   var inputField = document.getElementById('new-shout-text');
   inputField.value = '';
+}
+
+function updateTweet(direction, id) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/updatefavorite');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var data = {direction: direction, id: id};
+  var payload = JSON.stringify(data);
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    var response = JSON.parse(xhr.responseText);
+    var message = response.message;
+    console.log(message);
+  });
 }
 
 function pushTweet(tweet) {
