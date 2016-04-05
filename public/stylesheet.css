@@ -2,6 +2,10 @@
   background-color: #f8f8f8;
 }
 
+.background-landing {
+  background-color: #e7ebee;
+}
+
 .background-white {
   background-color: white;
 }
@@ -47,6 +51,7 @@
   margin-left: 15px;
   margin-right: 15px;
   margin-top: 50px;
+  background-color: #f6f6f6;
 }
 
 .bordered {
