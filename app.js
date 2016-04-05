@@ -9,7 +9,7 @@ var jsonParser = bodyParser.json();
 
 app.use(express.static('./public'));
 
-app.get('/timeline', function(req, res) {
+app.get('/tweets', function(req, res) {
   res.json(tweetCollection.tweets());
 });
 

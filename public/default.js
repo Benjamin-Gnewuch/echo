@@ -17,16 +17,14 @@ function setMainUser(user) {
 }
 
 //Gets ALL tweets
-function timeline() {
-  console.log('timeline');
-
+function getTweets(method) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/timeline');
+  xhr.open('GET', '/tweets');
   xhr.send();
 
   xhr.addEventListener('load', function() {
     var tweets = JSON.parse(xhr.responseText);
-    prepTimeline(tweets);
+    method(tweets)
   });
 }
 
@@ -240,7 +238,7 @@ function handleButton(target) {
   else if(target.dataset.id == 'home') {
     if(loggedin) {
       prepProfile(mainUser);
-      timeline();
+      getTweets(prepTimeline);
     }
     else {
       show(landingPage);
@@ -256,7 +254,9 @@ function handleButton(target) {
   }
   else if(target.dataset.id == 'shout-submit') {
     shout();
-    setTimeout(timeline, 1000);
+    setTimeout(function() {
+      getTweets(prepTimeline);
+    }, 1000);
   }
 }
 
@@ -396,7 +396,7 @@ function login() {
       setMainUser(message);
       hideModal();
       toggleLoggedIn();
-      timeline();
+      getTweets(prepTimeline);
     }
   });
 }
@@ -460,7 +460,7 @@ function profileTweets(user) {
   console.log('profileTweets');
 
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/timeline');
+  xhr.open('GET', '/tweets');
   xhr.send();
 
   xhr.addEventListener('load', function() {
