@@ -44,7 +44,6 @@ function prepTimeline(tweets) {
 //Creates a new tweet, combining data from tweets and user, calls generateTweet
 function makeTweet(tweet, user) {
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
-
   generateTweet(tweet);
 }
 
@@ -106,15 +105,15 @@ function tweetContent(location, tweet) {
   mediaBody.className = 'media-body';
   media.appendChild(mediaBody);
 
-  var tweetName = document.createElement('h5');
+  var tweetName = document.createElement('h4');
   tweetName.className = 'media-heading';
   tweetName.textContent = tweet.name;
   mediaBody.appendChild(tweetName);
 
-  var tweetHandle = document.createElement('h5');
+  var tweetHandle = document.createElement('small');
   tweetHandle.className = 'media-heading';
-  tweetHandle.textContent = tweet.handle;
-  mediaBody.appendChild(tweetHandle);
+  tweetHandle.textContent = ' ' + tweet.handle;
+  tweetName.appendChild(tweetHandle);
 
   var tweetTime = setDate(tweet.date);
   var tweetDate = document.createElement('p');
@@ -125,6 +124,54 @@ function tweetContent(location, tweet) {
   tweetText.className = 'tweet-text';
   tweetText.textContent = tweet.content;
   mediaBody.appendChild(tweetText);
+
+  tweetButtons(mediaBody, tweet);
+}
+
+function tweetButtons(location, tweet) {
+  var buttonRow = document.createElement('div');
+  buttonRow.className = 'row';
+
+  var retweetCol = document.createElement('div');
+  retweetCol.className = 'col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1';
+  buttonRow.appendChild(retweetCol);
+
+  var retweet = document.createElement('a');
+  retweet.href = "#";
+  retweet.dataset.tweetid = tweet.id;
+  retweet.dataset.type = 'icon-btn';
+  retweet.dataset.id = 'retweet';
+
+  var retweetIcon = document.createElement('i');
+  retweetIcon.className = 'fa fa-retweet fa-lg';
+
+  retweet.appendChild(retweetIcon);
+  retweetCol.appendChild(retweet);
+
+  var favoriteCol = document.createElement('div');
+  favoriteCol.className = 'col-md-2 col-sm-2';
+  buttonRow.appendChild(favoriteCol);
+
+  var favorite = document.createElement('a');
+  retweet.href = "#";
+  favorite.dataset.tweetid = tweet.id;
+  favorite.dataset.type = 'icon-btn';
+  favorite.dataset.id = 'favorite';
+
+  var favoriteIcon = document.createElement('i');
+
+  if(isFavorite(tweet.id)) {
+    favoriteIcon.className = 'fa fa-star fa-lg';
+  }
+  else {
+    favoriteIcon.className = 'fa fa-star-o fa-lg';
+  }
+
+  favorite.appendChild(favoriteIcon);
+  favoriteCol.appendChild(favorite);
+  buttonRow.appendChild(favoriteCol);
+
+  location.appendChild(buttonRow);
 }
 
 //Takes in the date from a tweet, and creates a Date object to be returned
@@ -176,6 +223,9 @@ function handleEvent(target) {
   else if(target.dataset.type == 'button') {
     handleButton(target);
   }
+  else if(target.dataset.type == 'icon-btn') {
+    handleIcon(target);
+  }
 }
 
 //Specifically handles any button clicked
@@ -207,6 +257,52 @@ function handleButton(target) {
   else if(target.dataset.id == 'shout-submit') {
     shout();
     setTimeout(timeline, 1000);
+  }
+}
+
+function handleIcon(target) {
+  if(target.dataset.id == 'retweet') {
+    retweet(target);
+  }
+  else if(target.dataset.id == 'favorite') {
+    favorite(target);
+  }
+}
+
+function retweet(icon) {
+  console.log('Retweet: ' + icon.dataset.tweetid);
+}
+
+function isFavorite(id) {
+  for(var i = 0; i < mainUser.favorites.length; i++) {
+    if(mainUser.favorites[i] == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function favorite(icon) {
+  var star = icon.firstChild;
+  if(star.className == 'fa fa-star-o fa-lg') {
+    star.className = 'fa fa-star fa-lg';
+    mainUser.favorites.push(Number(icon.dataset.tweetid));
+    mainUser.favorites.sort(function(a,b) {
+      return a-b;
+    });
+  }
+  else {
+    star.className = 'fa fa-star-o fa-lg';
+    unfavorite(icon.dataset.tweetid);
+  }
+  pushUser(mainUser);
+}
+
+function unfavorite(id) {
+  for(var i = 0; i < mainUser.favorites.length; i++) {
+    if(mainUser.favorites[i] == id) {
+      mainUser.favorites.splice(i,1);
+    }
   }
 }
 
@@ -361,8 +457,7 @@ function profileTweets(user) {
     }
 
     for(var i = userTweets.length-1; i >= 0; i--) {
-      var tweet = new Tweet(user.name, user.handle, userTweets[i].text, user.img, userTweets[i].date);
-      generateTweet(tweet);
+      makeTweet(userTweets[i], user);
     }
   });
 }
