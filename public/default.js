@@ -311,11 +311,13 @@ function handleButton(target) {
 }
 
 function handleIcon(target) {
-  if(target.dataset.id == 'retweet') {
-    retweet(target);
-  }
-  else if(target.dataset.id == 'favorite') {
-    favorite(target);
+  if(loggedin) {
+    if(target.dataset.id == 'retweet') {
+      retweet(target);
+    }
+    else if(target.dataset.id == 'favorite') {
+      favorite(target);
+    }
   }
 }
 
@@ -494,7 +496,7 @@ function toggleLoggedIn() {
 //calls getProfile and sets it each user the person is following to be populated
 function prepProfile(user) {
   console.log('prepProfile');
-
+  console.log(user);
   clearTweets();
   show(profilePage);
   clearFollowing();
@@ -637,24 +639,33 @@ function checkFollowing(user) {
   var follow = document.getElementById('btn-follow');
   follow.className = 'btn btn-primary vspace4';
   follow.dataset.handle = user.handle;
+  follow.className = 'btn btn-primary vspace4';
 
-  var following = mainUser.following.toString();
-  if(following.includes(user.handle)) {
-    follow.textContent = 'Unfollow';
-  }
-  else if (user.handle == mainUser.handle) {
-    follow.className = 'btn btn-primary vspace4 conceal';
+  if(loggedin) {
+    var following = mainUser.following.toString();
+
+    if(following.includes(user.handle)) {
+      follow.textContent = 'Unfollow';
+    }
+    else if (user.handle == mainUser.handle) {
+      follow.className = 'btn btn-primary vspace4 conceal';
+    }
+    else {
+      follow.textContent = 'Follow';
+    }
   }
   else {
-    follow.textContent = 'Follow';
+    follow.className = 'conceal';
   }
 }
 
 function toggleShoutButton(user) {
   var shoutButton = document.getElementById('new-shout-btn');
 
-  if(user.handle == mainUser.handle) {
-    shoutButton.className = 'btn btn-primary';
+  if(loggedin) {
+    if(user.handle == mainUser.handle) {
+      shoutButton.className = 'btn btn-primary';
+    }
   }
   else {
     shoutButton.className = 'btn btn-primary conceal';
