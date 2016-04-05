@@ -1,3 +1,5 @@
+//Things to do: have the shout submit on enter, add echo and favorite (unique tweet id)
+
 var tweetLocation = document.getElementById('tweet-list');
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
@@ -213,6 +215,8 @@ function shout() {
   if(newShout != "") {
     var time = new Date();
 
+    collapseShout();
+
     var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes())
     console.log(time);
 
@@ -223,6 +227,19 @@ function shout() {
      }
      pushTweet(shoutToSend);
   }
+}
+
+function collapseShout() {
+  var shoutButton = document.getElementById('new-shout-btn');
+  shoutButton.className = 'btn btn-primary collapsed';
+  shoutButton.setAttribute('aria-expanded', 'false');
+
+  var inputDiv = document.getElementById('newShoutInput');
+  inputDiv.className = 'vspace1 collapse';
+  inputDiv.setAttribute('aria-expanded', 'false');
+
+  var inputField = document.getElementById('new-shout-text');
+  inputField.value = '';
 }
 
 function pushTweet(tweet) {
@@ -318,6 +335,7 @@ function prepProfile(user) {
   clearFollowing();
   populateProfile(user);
   profileTweets(user);
+  toggleShoutButton(user);
 
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
@@ -451,6 +469,7 @@ function toggleFollowing(handle) {
 
 //Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
+  console.log('checkFollowing');
   var follow = document.getElementById('btn-follow');
   follow.className = 'btn btn-primary vspace4';
   follow.dataset.handle = user.handle;
@@ -464,6 +483,17 @@ function checkFollowing(user) {
   }
   else {
     follow.textContent = 'Follow';
+  }
+}
+
+function toggleShoutButton(user) {
+  var shoutButton = document.getElementById('new-shout-btn');
+
+  if(user.handle == mainUser.handle) {
+    shoutButton.className = 'btn btn-primary';
+  }
+  else {
+    shoutButton.className = 'btn btn-primary conceal';
   }
 }
 
