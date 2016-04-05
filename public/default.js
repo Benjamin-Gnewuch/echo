@@ -1,11 +1,13 @@
 //Things to do: have the shout submit on enter, add echo and favorite (unique tweet id)
 
 var tweetLocation = document.getElementById('tweet-list');
+var landingTweetLocation = document.getElementById('landing-tweets');
+var landingRow = document.getElementById('first-row');
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
 var landingPage = document.getElementById('landing-page');
 var profilePage = document.getElementById('profile-page');
-
+var rowCounter = 0;
 var mainUser;
 var loggedin = false;
 
@@ -43,6 +45,53 @@ function prepTimeline(tweets) {
 function makeTweet(tweet, user) {
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
   generateTweet(tweet);
+}
+
+getTweets(prepLanding);
+
+function prepLanding(tweets) {
+  console.log('prepLanding');
+
+  for(var i = tweets.length-1; i >= 0; i--) {
+    matchUser(tweets[i], makeLandingTweet);
+  }
+}
+
+function makeLandingTweet(tweet, user) {
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
+  landingTweetFoundation(tweet);
+}
+
+function landingTweetFoundation(tweet) {
+  var newRow = document.createElement('div');
+  newRow.className = 'row bordered';
+
+  var col = document.createElement('div');
+  col.className = 'col-md-4 col-sm-4 text-center';
+
+  if(rowCounter == 3) {
+    rowCounter = 0;
+    landingRow = newRow;
+    landingTweetLocation.appendChild(newRow);
+    newRow.appendChild(col);
+  }
+  else {
+    landingRow.appendChild(col);
+  }
+  rowCounter++;
+
+  var tweetPanel = document.createElement('div');
+  tweetPanel.className = 'panel panel-default landing-tweet';
+  var panelBody = document.createElement('div');
+  panelBody.className = ('panel-body tweet')
+
+  tweetPanel.dataset.type = 'tweet';
+  tweetPanel.dataset.handle = tweet.handle;
+  tweetPanel.dataset.tweetid = tweet.id;
+  tweetPanel.appendChild(panelBody);
+  col.appendChild(tweetPanel);
+
+  tweetContent(panelBody, tweet);
 }
 
 //Gets users from backend, matches a user to the tweet, then calls callback
@@ -86,6 +135,7 @@ function generateTweet(tweet) {
 
 //Creates a media object and fills it with a tweet's data, appends to the DOM
 function tweetContent(location, tweet) {
+  console.log('tweetContent');
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -274,9 +324,11 @@ function retweet(icon) {
 }
 
 function isFavorite(id) {
-  for(var i = 0; i < mainUser.favorites.length; i++) {
-    if(mainUser.favorites[i] == id) {
-      return true;
+  if(mainUser != null) {
+    for(var i = 0; i < mainUser.favorites.length; i++) {
+      if(mainUser.favorites[i] == id) {
+        return true;
+      }
     }
   }
   return false;
