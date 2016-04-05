@@ -9,8 +9,6 @@ var profilePage = document.getElementById('profile-page');
 var mainUser;
 var loggedin = false;
 
-//timeline();
-
 //Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
   mainUser = user;
@@ -45,7 +43,7 @@ function prepTimeline(tweets) {
 
 //Creates a new tweet, combining data from tweets and user, calls generateTweet
 function makeTweet(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date);
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
 
   generateTweet(tweet);
 }
@@ -68,12 +66,13 @@ function matchUser(tweet, callback) {
 }
 
 //Tweet constructor
-function Tweet(name, handle, content, img, date) {
+function Tweet(name, handle, content, img, date, id) {
   this.name = name;
   this.handle = handle;
   this.content = content;
   this.img = img;
   this.date = date;
+  this.id = id;
 }
 
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
@@ -83,6 +82,7 @@ function generateTweet(tweet) {
 
   tweetElement.dataset.type = 'tweet';
   tweetElement.dataset.handle = tweet.handle;
+  tweetElement.dataset.tweetid = tweet.id;
   tweetLocation.appendChild(tweetElement);
   tweetContent(tweetElement, tweet);
 }
