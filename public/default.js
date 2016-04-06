@@ -395,14 +395,7 @@ function shout() {
 }
 
 function collapseShout() {
-  var shoutButton = document.getElementById('new-shout-btn');
-  shoutButton.className = 'btn btn-primary collapsed';
-  shoutButton.setAttribute('aria-expanded', 'false');
-
   var inputDiv = document.getElementById('newShoutInput');
-  inputDiv.className = 'vspace1 collapse';
-  inputDiv.setAttribute('aria-expanded', 'false');
-
   var inputField = document.getElementById('new-shout-text');
   inputField.value = '';
 }
@@ -657,7 +650,7 @@ function checkFollowing(user) {
 
   if(loggedin) {
     var following = mainUser.following.toString();
-    follow.className = 'btn btn-primary vspace4';
+    follow.className = 'btn btn-primary btn-lg vspace4';
 
     if (user.handle == mainUser.handle) {
       follow.textContent = 'New Shout';
@@ -688,24 +681,6 @@ function checkFollowing(user) {
     follow.className = 'conceal';
   }
 }
-
-// function toggleShoutButton(user) {
-//   var shoutButton = document.getElementById('new-shout-btn');
-//   console.log('toggleShoutButton');
-//   console.log(mainUser);
-//   console.log(user);
-//   console.log(loggedin);
-//
-//   if(loggedin) {
-//     if(user.handle == mainUser.handle) {
-//       shoutButton.className = 'btn btn-primary';
-//     }
-//   }
-//   else {
-//     console.log("This isn't you");
-//     shoutButton.className = 'btn btn-primary conceal';
-//   }
-// }
 
 //Clears the DOM of all the users followed by current profile
 function clearFollowing() {
