@@ -11,7 +11,8 @@
 }
 
 .background-twitter {
-  background-image: url(https://abs.twimg.com/a/1459361345/img/t1/lohp_streams_header_bg_v4.png);
+  background-image: url(/img/twitter-banner.png);
+  background-size: contain;
 }
 
 .text-white {
@@ -31,8 +32,9 @@
 }
 
 #profile-img {
-  height: 150px;
-  width: 150px;
+  height: 130px;
+  width: 130px;
+  text-align: right;
 }
 
 #new-shout {
