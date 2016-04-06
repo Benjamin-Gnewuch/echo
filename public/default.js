@@ -516,7 +516,7 @@ function prepProfile(user) {
   clearFollowing();
   populateProfile(user);
   profileTweets(user);
-  toggleShoutButton(user);
+  //toggleShoutButton(user);
 
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
@@ -651,24 +651,37 @@ function toggleFollowing(handle) {
 //Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
   console.log('checkFollowing');
-  var follow = document.getElementById('btn-follow');
+  var follow = document.getElementById('btn-follow-shout');
   follow.className = 'btn btn-primary vspace4';
   follow.dataset.handle = user.handle;
-  follow.className = 'btn btn-primary vspace4';
 
   if(loggedin) {
     var following = mainUser.following.toString();
+    follow.className = 'btn btn-primary vspace4';
 
-    if(following.includes(user.handle)) {
-      follow.textContent = 'Unfollow';
-      follow.className = 'btn btn-primary vspace4';
-    }
-    else if (user.handle == mainUser.handle) {
-      follow.className = 'btn btn-primary vspace4 conceal';
+    if (user.handle == mainUser.handle) {
+      follow.textContent = 'New Shout';
+      follow.dataset.toggle = 'collapse';
+      follow.dataset.target = '#newShoutInput';
+      follow.removeAttribute('data-type');
+      follow.removeAttribute('data-id');
+      follow.setAttribute('aria-expanded', 'true');
+      follow.setAttribute('aria-controls', 'collapseExample');
     }
     else {
-      follow.className = 'btn btn-primary vspace4';
-      follow.textContent = 'Follow';
+      follow.dataset.id = 'follow';
+      follow.dataset.type = 'button';
+      follow.removeAttribute('data-toggle');
+      follow.removeAttribute('aria-expanded');
+      follow.removeAttribute('data-target');
+      follow.removeAttribute('aria-controls');
+
+      if(following.includes(user.handle)) {
+        follow.textContent = 'Unfollow';
+      }
+      else {
+        follow.textContent = 'Follow';
+      }
     }
   }
   else {
@@ -676,23 +689,23 @@ function checkFollowing(user) {
   }
 }
 
-function toggleShoutButton(user) {
-  var shoutButton = document.getElementById('new-shout-btn');
-  console.log('toggleShoutButton');
-  console.log(mainUser);
-  console.log(user);
-  console.log(loggedin);
-
-  if(loggedin) {
-    if(user.handle == mainUser.handle) {
-      shoutButton.className = 'btn btn-primary';
-    }
-  }
-  else {
-    console.log("This isn't you");
-    shoutButton.className = 'btn btn-primary conceal';
-  }
-}
+// function toggleShoutButton(user) {
+//   var shoutButton = document.getElementById('new-shout-btn');
+//   console.log('toggleShoutButton');
+//   console.log(mainUser);
+//   console.log(user);
+//   console.log(loggedin);
+//
+//   if(loggedin) {
+//     if(user.handle == mainUser.handle) {
+//       shoutButton.className = 'btn btn-primary';
+//     }
+//   }
+//   else {
+//     console.log("This isn't you");
+//     shoutButton.className = 'btn btn-primary conceal';
+//   }
+// }
 
 //Clears the DOM of all the users followed by current profile
 function clearFollowing() {
