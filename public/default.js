@@ -1,6 +1,7 @@
 //Things to do: add badge to favorites for tweets, add tabs, random user generation/add more data, set feed
 
 var tweetLocation = document.getElementById('tweet-list');
+var favoriteLocation = document.getElementById('favorite-list');
 var landingTweetLocation = document.getElementById('landing-tweets');
 var landingRow = document.getElementById('first-row');
 var lineBreak = document.createElement('br');
@@ -317,6 +318,12 @@ function handleButton(target) {
       getTweets(prepFeed);
     }, 1000);
   }
+  else if(target.dataset.id == 'feed') {
+    getTweets(prepFeed);
+  }
+  else if(target.dataset.id == 'favorites') {
+    getTweets(getFavorites);
+  }
 }
 
 function handleIcon(target) {
@@ -356,8 +363,8 @@ function favorite(icon) {
       return a-b;
     });
     updateTweet('increase', icon.dataset.tweetid);
-    console.log(badge.textContent);
     badge.textContent++;
+    console.log(mainUser.favorites);
   }
   else {
     star.className = 'fa fa-star-o fa-lg';
@@ -373,6 +380,40 @@ function unfavorite(id) {
     if(mainUser.favorites[i] == id) {
       mainUser.favorites.splice(i,1);
     }
+  }
+}
+
+function getFavorites(tweets) {
+  console.log('getFavorites');
+  clearFavorites();
+
+  for(var i = tweets.length-1; i >= 0; i--) {
+    if(mainUser.favorites.indexOf(tweets[i].id) != -1) {
+      matchUser(tweets[i], prepFavorites);
+    }
+  }
+}
+
+function prepFavorites(tweet, user) {
+  console.log('prepFavorites');
+
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id,tweet.favoriteCount);
+
+  var tweetElement = document.createElement('a');
+  tweetElement.className = 'list-group-item tweet background';
+
+  tweetElement.dataset.type = 'tweet';
+  tweetElement.dataset.handle = tweet.handle;
+  tweetElement.dataset.tweetid = tweet.id;
+  favoriteLocation.appendChild(tweetElement);
+  tweetContent(tweetElement, tweet);
+}
+
+function clearFavorites() {
+  console.log('clearFavorites');
+
+  while(favoriteLocation.firstChild) {
+    favoriteLocation.removeChild(favoriteLocation.firstChild);
   }
 }
 
@@ -510,7 +551,8 @@ function prepProfile(user) {
   clearFollowing();
   populateProfile(user);
   profileTweets(user);
-  //toggleShoutButton(user);
+  getTweets(getFavorites);
+
 
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
@@ -671,7 +713,7 @@ function checkFollowing(user) {
       follow.removeAttribute('aria-controls');
 
       if(following.includes(user.handle)) {
-        follow.textContent = 'Unfollow';
+        follow.textContent = 'Following';
       }
       else {
         follow.textContent = 'Follow';
