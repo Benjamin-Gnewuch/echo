@@ -31,6 +31,10 @@
   margin-top: -20px;
 }
 
+.badge {
+  background-color: #495789;
+}
+
 #profile-img {
   height: 130px;
   width: 130px;
@@ -126,4 +130,9 @@
 
 .following {
   cursor: pointer;
+}
+
+.smaller {
+  margin-left: 15px;
+  margin-right: 15px;
 }

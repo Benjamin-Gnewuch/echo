@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-5 col-sm-5">
+        <div class="col-md-6 col-sm-5">
           <div class="text-center" id="new-shout">
             <button id="new-shout-btn" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#newShoutInput" aria-expanded="false" aria-controls="collapseExample">
               New Shout
@@ -127,10 +127,26 @@
               </div>
             </div>
           </div>
-          <div class="container-fluid" id="tweet-container">
-            <div class="list-group" id="tweet-list">
-            </div>
-          </div>
+          <div>
+            <ul class="nav nav-tabs smaller" role="tablist">
+              <li role="presentation" class="active"><a href="#feed" aria-controls="feed" role="tab" data-toggle="tab">Your Feed</a></li>
+              <li role="presentation"><a href="#favorites" aria-controls="favorites" role="tab" data-toggle="tab">Your Favorites</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active fade in" id="feed">
+                <div class="container-fluid" id="tweet-container">
+                  <div class="list-group" id="tweet-list">
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="favorites">
+                <div class="container-fluid" id="favorites-container">
+                  <div class="list-group" id="favorite-list">
+                  </div>
+                </div>
+              </div>
+           </div>
+         </div>
         </div>
         <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1"><!--Trending-->
         </div>
