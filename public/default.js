@@ -1,4 +1,4 @@
-//Things to do: have the shout submit on enter, add echo and favorite (unique tweet id)
+//Things to do: add badge to favorites for tweets, add tabs, random user generation/add more data, set feed
 
 var tweetLocation = document.getElementById('tweet-list');
 var landingTweetLocation = document.getElementById('landing-tweets');
@@ -43,7 +43,7 @@ function prepTimeline(tweets) {
 
 //Creates a new tweet, combining data from tweets and user, calls generateTweet
 function makeTweet(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount);
   generateTweet(tweet);
 }
 
@@ -58,7 +58,7 @@ function prepLanding(tweets) {
 }
 
 function makeLandingTweet(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id);
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount);
   landingTweetFoundation(tweet);
 }
 
@@ -67,7 +67,7 @@ function landingTweetFoundation(tweet) {
   newRow.className = 'row bordered';
 
   var col = document.createElement('div');
-  col.className = 'col-md-4 col-sm-4 text-center';
+  col.className = 'col-md-4 col-sm-4';
 
   if(rowCounter == 3) {
     rowCounter = 0;
@@ -112,13 +112,14 @@ function matchUser(tweet, callback) {
 }
 
 //Tweet constructor
-function Tweet(name, handle, content, img, date, id) {
+function Tweet(name, handle, content, img, date, id, favoriteCount) {
   this.name = name;
   this.handle = handle;
   this.content = content;
   this.img = img;
   this.date = date;
   this.id = id;
+  this.favoriteCount = favoriteCount;
 }
 
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
@@ -181,7 +182,7 @@ function tweetButtons(location, tweet) {
   buttonRow.className = 'row';
 
   var retweetCol = document.createElement('div');
-  retweetCol.className = 'col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1';
+  retweetCol.className = 'col-md-3 col-md-offset-1 col-sm-4 col-sm-offset-1';
   buttonRow.appendChild(retweetCol);
 
   var retweet = document.createElement('a');
@@ -197,11 +198,13 @@ function tweetButtons(location, tweet) {
   retweetCol.appendChild(retweet);
 
   var favoriteCol = document.createElement('div');
-  favoriteCol.className = 'col-md-2 col-sm-2';
+  favoriteCol.className = 'col-md-3 col-sm-4';
   buttonRow.appendChild(favoriteCol);
 
   var favorite = document.createElement('a');
-  retweet.href = "#";
+
+  favorite.href = "#";
+  favorite.className = 'active';
   favorite.dataset.tweetid = tweet.id;
   favorite.dataset.type = 'icon-btn';
   favorite.dataset.id = 'favorite';
@@ -215,7 +218,12 @@ function tweetButtons(location, tweet) {
     favoriteIcon.className = 'fa fa-star-o fa-lg';
   }
 
+  var badge = document.createElement('span');
+  badge.className = 'badge';
+  badge.textContent = tweet.favoriteCount;
+
   favorite.appendChild(favoriteIcon);
+  favorite.appendChild(badge);
   favoriteCol.appendChild(favorite);
   buttonRow.appendChild(favoriteCol);
 
@@ -338,6 +346,8 @@ function isFavorite(id) {
 
 function favorite(icon) {
   var star = icon.firstChild;
+  var badge = star.nextSibling;
+
   if(star.className == 'fa fa-star-o fa-lg') {
     star.className = 'fa fa-star fa-lg';
     mainUser.favorites.push(Number(icon.dataset.tweetid));
@@ -345,10 +355,13 @@ function favorite(icon) {
       return a-b;
     });
     updateTweet('increase', icon.dataset.tweetid);
+    console.log(badge.textContent);
+    badge.textContent++;
   }
   else {
     star.className = 'fa fa-star-o fa-lg';
     unfavorite(icon.dataset.tweetid);
+    badge.textContent--;
     updateTweet('decrease', icon.dataset.tweetid);
   }
   pushUser(mainUser);
@@ -489,6 +502,7 @@ function toggleLoggedIn() {
     loginButton.textContent = 'Log Out';
     loginButton.dataset.toggle = '';
   }
+  console.log(loggedin);
   //console.log(mainUser);
 }
 
@@ -567,6 +581,7 @@ function pushUser(user) {
 
 //Takes a user, and puts their info into the profile header, calls checkFollowing
 function populateProfile(user){
+  console.log('polulateProfile');
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
   var handle = document.getElementById('handle');
@@ -646,11 +661,13 @@ function checkFollowing(user) {
 
     if(following.includes(user.handle)) {
       follow.textContent = 'Unfollow';
+      follow.className = 'btn btn-primary vspace4';
     }
     else if (user.handle == mainUser.handle) {
       follow.className = 'btn btn-primary vspace4 conceal';
     }
     else {
+      follow.className = 'btn btn-primary vspace4';
       follow.textContent = 'Follow';
     }
   }
@@ -661,6 +678,10 @@ function checkFollowing(user) {
 
 function toggleShoutButton(user) {
   var shoutButton = document.getElementById('new-shout-btn');
+  console.log('toggleShoutButton');
+  console.log(mainUser);
+  console.log(user);
+  console.log(loggedin);
 
   if(loggedin) {
     if(user.handle == mainUser.handle) {
@@ -668,6 +689,7 @@ function toggleShoutButton(user) {
     }
   }
   else {
+    console.log("This isn't you");
     shoutButton.className = 'btn btn-primary conceal';
   }
 }
