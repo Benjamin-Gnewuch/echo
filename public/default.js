@@ -30,14 +30,15 @@ function getTweets(method) {
   });
 }
 
-//Calls clearTweets() and matches each tweet to it's author
-function prepTimeline(tweets) {
-  console.log('prepTimeline');
-
+function prepFeed(tweets) {
+  console.log('prepFeed');
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
-    matchUser(tweets[i], makeTweet);
+    var tweet = tweets[i];
+    if(mainUser.following.indexOf(tweet.handle) != -1 || tweet.handle == mainUser.handle){
+      matchUser(tweet, makeTweet);
+    }
   }
 }
 
@@ -296,7 +297,7 @@ function handleButton(target) {
   else if(target.dataset.id == 'home') {
     if(loggedin) {
       prepProfile(mainUser);
-      getTweets(prepTimeline);
+      getTweets(prepFeed);
     }
     else {
       show(landingPage);
@@ -313,7 +314,7 @@ function handleButton(target) {
   else if(target.dataset.id == 'shout-submit') {
     shout();
     setTimeout(function() {
-      getTweets(prepTimeline);
+      getTweets(prepFeed);
     }, 1000);
   }
 }
@@ -456,7 +457,7 @@ function login() {
       setMainUser(message);
       hideModal();
       toggleLoggedIn();
-      getTweets(prepTimeline);
+      getTweets(prepFeed);
     }
   });
 }
