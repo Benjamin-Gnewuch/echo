@@ -17,6 +17,10 @@ app.get('/users', function(req, res) {
   res.json(userCollection.users());
 });
 
+app.post('/gettweet', jsonParser, function(req, res) {
+  res.json({message: tweetCollection.tweet(req.body.id)});
+});
+
 app.post('/getprofile', jsonParser, function(req, res) {
   var users = userCollection.users();
   for(var i = 0; i < users.length; i++) {

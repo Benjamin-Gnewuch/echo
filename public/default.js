@@ -1,13 +1,11 @@
-//Things to do: add badge to favorites for tweets, add tabs, random user generation/add more data, set feed
-
 var tweetLocation = document.getElementById('tweet-list');
 var favoriteLocation = document.getElementById('favorite-list');
 var landingTweetLocation = document.getElementById('landing-tweets');
 var landingRow = document.getElementById('first-row');
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
-var landingPage = document.getElementById('landing-page');
-var profilePage = document.getElementById('profile-page');
+var landingPageLocation = document.getElementById('landing-page');
+var profilePageLocation = document.getElementById('profile-page');
 var rowCounter = 0;
 var mainUser;
 var loggedin = false;
@@ -301,7 +299,7 @@ function handleButton(target) {
       getTweets(prepFeed);
     }
     else {
-      show(landingPage);
+      show(landingPageLocation);
     }
   }
   else if(target.dataset.id == 'login-submit') {
@@ -338,7 +336,15 @@ function handleIcon(target) {
 }
 
 function retweet(icon) {
-  console.log('Retweet: ' + icon.dataset.tweetid);
+  getTweet(icon.dataset.tweetid, buildTweet);
+  prepProfile(mainUser);
+}
+
+function buildTweet(tweet) {
+  var newShout = document.getElementById('new-shout-text');
+  newShout.value = 'ECHO: ' + tweet.handle + ' ' + tweet.text;
+  console.log(newShout);
+  shout();
 }
 
 function isFavorite(id) {
@@ -418,7 +424,9 @@ function clearFavorites() {
 }
 
 function shout() {
+  console.log('shout');
   var newShout = document.getElementById('new-shout-text').value;
+  console.log(newShout);
   if(newShout != "") {
     var time = new Date();
 
@@ -440,6 +448,23 @@ function collapseShout() {
   var inputDiv = document.getElementById('newShoutInput');
   var inputField = document.getElementById('new-shout-text');
   inputField.value = '';
+  inputDiv.className = 'vspace1 collapse';
+  inputDiv.setAttribute('aria-expanded', 'false');
+}
+
+function getTweet(id, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/gettweet');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var data = {id: id};
+  var payload = JSON.stringify(data);
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    var response = JSON.parse(xhr.responseText);
+    var message = response.message;
+    callback(message);
+  });
 }
 
 function updateTweet(direction, id) {
@@ -520,7 +545,7 @@ function logout() {
 
   mainUser = {};
   toggleLoggedIn();
-  show(landingPage);
+  show(landingPageLocation);
 }
 
 function toggleLoggedIn() {
@@ -537,8 +562,6 @@ function toggleLoggedIn() {
     loginButton.textContent = 'Log Out';
     loginButton.dataset.toggle = '';
   }
-  console.log(loggedin);
-  //console.log(mainUser);
 }
 
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
@@ -547,7 +570,8 @@ function prepProfile(user) {
   console.log('prepProfile');
   console.log(user);
   clearTweets();
-  show(profilePage);
+  show(profilePageLocation);
+  collapseShout();
   clearFollowing();
   populateProfile(user);
   profileTweets(user);
@@ -557,6 +581,30 @@ function prepProfile(user) {
   for(var i = 0; i < user.following.length; i++) {
     getProfile(user.following[i], populateFollowing);
   }
+}
+
+function showTabs() {
+  console.log('showTabs');
+  var feedTab = document.getElementById('feed-tab');
+  var favoriteTab = document.getElementById('favorites-tab');
+
+  feedTab.className = 'active';
+  favoriteTab.className = '';
+}
+
+function hideTabs() {
+  console.log('hideTabs');
+  var feedTab = document.getElementById('feed-tab');
+  var favoriteTab = document.getElementById('favorites-tab');
+
+  feedTab.className = 'active conceal';
+  favoriteTab.className = 'conceal';
+
+  var feedTabTweets = document.getElementById('feed');
+  var favoriteTabTweets = document.getElementById('favorites');
+
+  feedTabTweets.className = 'tab-pane fade active in';
+  favoriteTabTweets.className = 'tab-pane fade';
 }
 
 //Gets all tweets, takes the ones posted by user, builds each tweet, and sends it to generateTweet
@@ -686,43 +734,47 @@ function toggleFollowing(handle) {
 
 //Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
-  console.log('checkFollowing');
-  var follow = document.getElementById('btn-follow-shout');
-  follow.className = 'btn btn-primary vspace4';
-  follow.dataset.handle = user.handle;
+  setTimeout(function() {
+    console.log('checkFollowing');
+    var follow = document.getElementById('btn-follow-shout');
+    follow.className = 'btn btn-primary vspace4';
+    follow.dataset.handle = user.handle;
 
-  if(loggedin) {
-    var following = mainUser.following.toString();
-    follow.className = 'btn btn-primary btn-lg vspace4';
+    if(loggedin) {
+      var following = mainUser.following.toString();
+      follow.className = 'btn btn-primary btn-lg vspace4';
 
-    if (user.handle == mainUser.handle) {
-      follow.textContent = 'New Shout';
-      follow.dataset.toggle = 'collapse';
-      follow.dataset.target = '#newShoutInput';
-      follow.removeAttribute('data-type');
-      follow.removeAttribute('data-id');
-      follow.setAttribute('aria-expanded', 'true');
-      follow.setAttribute('aria-controls', 'collapseExample');
-    }
-    else {
-      follow.dataset.id = 'follow';
-      follow.dataset.type = 'button';
-      follow.removeAttribute('data-toggle');
-      follow.removeAttribute('aria-expanded');
-      follow.removeAttribute('data-target');
-      follow.removeAttribute('aria-controls');
-
-      if(following.includes(user.handle)) {
-        follow.textContent = 'Following';
+      if (user.handle == mainUser.handle) {
+        follow.textContent = 'New Shout';
+        follow.dataset.toggle = 'collapse';
+        follow.dataset.target = '#newShoutInput';
+        follow.removeAttribute('data-type');
+        follow.removeAttribute('data-id');
+        follow.setAttribute('aria-expanded', 'true');
+        follow.setAttribute('aria-controls', 'collapseExample');
+        showTabs();
       }
       else {
-        follow.textContent = 'Follow';
+        hideTabs();
+        follow.dataset.id = 'follow';
+        follow.dataset.type = 'button';
+        follow.removeAttribute('data-toggle');
+        follow.removeAttribute('aria-expanded');
+        follow.removeAttribute('data-target');
+        follow.removeAttribute('aria-controls');
+
+        if(following.includes(user.handle)) {
+          follow.textContent = 'Following';
+        }
+        else {
+          follow.textContent = 'Follow';
+        }
       }
     }
-  }
-  else {
-    follow.className = 'conceal';
-  }
+    else {
+      follow.className = 'conceal';
+    }
+  },1);
 }
 
 //Clears the DOM of all the users followed by current profile
@@ -734,7 +786,7 @@ function clearFollowing() {
 }
 
 function show(page) {
-  var pages = [landingPage, profilePage];
+  var pages = [landingPageLocation, profilePageLocation];
   for (var i = 0; i < pages.length; i++) {
     if (pages[i].id == page.id) {
       pages.splice(i,1);

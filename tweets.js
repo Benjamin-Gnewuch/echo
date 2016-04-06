@@ -20,6 +20,15 @@ var tweetCollection = function tweets() {
     return tweets;
   }
 
+  function getTweet(id) {
+    for(var i = 0; i < tweets.length; i++) {
+      if(tweets[i].id == id) {
+        return tweets[i];
+      }
+    }
+    return 'Tweet not found';
+  }
+
   function incrementFavorite(id) {
     for(var i = 0; i < tweets.length; i++) {
       if(tweets[i].id == id) {
@@ -46,6 +55,7 @@ var tweetCollection = function tweets() {
 
   return {
     tweets: getTweets,
+    tweet: getTweet,
     incrementFavorite: incrementFavorite,
     decrementFavorite: decrementFavorite,
     addTweet: addTweet
