@@ -157,7 +157,6 @@ function generateTweet(tweet) {
 
 //Creates a media object and fills it with a tweet's data, appends to the DOM
 function tweetContent(location, tweet) {
-  console.log('tweetContent');
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -374,8 +373,6 @@ function buildTweet(tweet) {
 }
 
 function isFavorite(id) {
-  console.log('isFavorite');
-
   if(mainUser != null) {
     for(var i = 0; i < mainUser.favorites.length; i++) {
       if(mainUser.favorites[i] == id) {
@@ -453,34 +450,37 @@ function clearFavorites() {
 
 function shout() {
   console.log('shout');
-  var newShout = document.getElementById('new-shout-text').value;
-  console.log(newShout);
-  if(newShout != "") {
+  var newShout = document.getElementById('new-shout-text');
+  console.log(newShout.value);
+  if(newShout.value != "") {
     var time = new Date();
 
-    collapseShout();
+    //collapseShout();
 
     var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes());
     console.log(time);
 
      var shoutToSend = {
        handle: mainUser.handle,
-       text: newShout,
+       text: newShout.value,
        date: date
      }
+     console.log(shoutToSend);
      pushTweet(shoutToSend);
   }
+  newShout.value = '';
 }
 
 $('#shout-submit').on('click', function() {
   $('#new-shout').collapse({
     toggle: false
-  })
+  });
 })
 
 function collapseShout() {
-  var inputField = document.getElementById('new-shout-text');
-  inputField.value = '';
+  var inputDiv = document.getElementById('newShoutInput');
+  inputDiv.className = 'vspace1 collapse';
+  inputDiv.setAttribute('aria-expanded', 'false');
 }
 
 function getTweet(id, callback) {
@@ -509,7 +509,6 @@ function updateTweet(direction, id) {
   xhr.addEventListener('load', function() {
     var response = JSON.parse(xhr.responseText);
     var message = response.message;
-    console.log(message);
   });
 }
 
