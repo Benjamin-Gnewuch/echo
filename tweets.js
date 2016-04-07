@@ -82,7 +82,7 @@ function random(val) {
   return Math.round(Math.random() * val);
 }
 
-var id = 12;
+var id = 0;
 
 function makeRandomTweet() {
   var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman'];
@@ -90,8 +90,6 @@ function makeRandomTweet() {
   var handle = handles[index];
 
   var text = faker.Lorem.sentences() + ' #' + faker.random.catch_phrase_descriptor() + faker.random.catch_phrase_noun();
-
-  //+ '#' + faker.random.words()
 
   var date = randomDate();
 
