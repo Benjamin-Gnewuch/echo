@@ -81,10 +81,10 @@ app.post('/authorize', jsonParser, function(req, res) {
   var response = userCollection.authorize(req.body);
   console.log('Response: ' + response.handle);
   if(response == 401) {
-    res.send(response);
+    res.sendStatus(401);
   }
   else if(response == 404) {
-    res.send(response);
+    res.sendStatus(404);
   }
   else {
     res.cookie('loggedin', 'true');

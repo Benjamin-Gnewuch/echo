@@ -31,7 +31,6 @@ function getTweets(method) {
 }
 
 function prepFeed(tweets) {
-  console.log('prepFeed');
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -69,8 +68,6 @@ function arrive() {
 }
 
 function prepLanding(tweets) {
-  console.log('prepLanding');
-
   clearLanding();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -262,8 +259,6 @@ function setDate(date) {
 
 //Clears all tweets in the DOM
 function clearTweets() {
-  console.log('clearTweets');
-
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
     tweets.removeChild(tweets.firstChild);
@@ -280,7 +275,6 @@ document.addEventListener('click', function(event) {
   function findTarget(clicked) {
     for(var target = clicked; target != document; target = target.parentNode) {
       if(target.hasAttribute('data-type')) {
-        console.log(target);
         return target;
       }
     }
@@ -291,8 +285,6 @@ document.addEventListener('click', function(event) {
 
 //Handles events sent to it from Global Event Listener
 function handleEvent(target) {
-  console.log('handleEvent');
-
   if(target.dataset.type == 'tweet' || target.dataset.type == 'user') {
     getProfile(target.dataset.handle, prepProfile);
   }
@@ -309,8 +301,6 @@ function handleEvent(target) {
 
 //Specifically handles any button clicked
 function handleButton(target) {
-  console.log('handleButton');
-
   if(target.dataset.id == 'follow') {
     toggleFollowing(target.dataset.handle);
     pushUser(mainUser);
@@ -368,7 +358,6 @@ function retweet(icon) {
 function buildTweet(tweet) {
   var newShout = document.getElementById('new-shout-text');
   newShout.value = 'ECHO: ' + tweet.handle + ' ' + '"' + tweet.text + '"';
-  console.log(newShout);
   shout();
 }
 
@@ -395,7 +384,6 @@ function favorite(icon) {
     });
     updateTweet('increase', icon.dataset.tweetid);
     badge.textContent++;
-    console.log(mainUser.favorites);
   }
   else {
     star.className = 'fa fa-star-o fa-lg';
@@ -415,7 +403,6 @@ function unfavorite(id) {
 }
 
 function getFavorites(tweets) {
-  console.log('getFavorites');
   clearFavorites();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -426,8 +413,6 @@ function getFavorites(tweets) {
 }
 
 function prepFavorites(tweet, user) {
-  console.log('prepFavorites');
-
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id,tweet.favoriteCount);
 
   var tweetElement = document.createElement('a');
@@ -441,31 +426,25 @@ function prepFavorites(tweet, user) {
 }
 
 function clearFavorites() {
-  console.log('clearFavorites');
-
   while(favoriteLocation.firstChild) {
     favoriteLocation.removeChild(favoriteLocation.firstChild);
   }
 }
 
 function shout() {
-  console.log('shout');
   var newShout = document.getElementById('new-shout-text');
-  console.log(newShout.value);
   if(newShout.value != "") {
     var time = new Date();
 
     //collapseShout();
 
     var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes());
-    console.log(time);
 
      var shoutToSend = {
        handle: mainUser.handle,
        text: newShout.value,
        date: date
      }
-     console.log(shoutToSend);
      pushTweet(shoutToSend);
   }
   newShout.value = '';
@@ -513,7 +492,6 @@ function updateTweet(direction, id) {
 }
 
 function pushTweet(tweet) {
-  console.log(tweet);
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/pushtweet');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -530,23 +508,18 @@ function search() {
   var searchInput = document.getElementById('search-input');
   var searchVal = searchInput.value;
 
-  console.log(searchVal);
-
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/search');
   var payload = JSON.stringify({search: searchVal});
-  console.log(payload);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(payload);
 
   xhr.addEventListener('load', function() {
     if(xhr.status == 404) {
-      console.log('No results found');
     }
     else {
       var result = JSON.parse(xhr.responseText);
       var message = result.message;
-      console.log(message);
       prepProfile(message);
     }
   });
@@ -554,8 +527,7 @@ function search() {
 
 //Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
 function login() {
-  console.log('login');
-
+  var warning = document.getElementById('login-warning');
   var handle = document.getElementById('login-handle').value;
   var pw = document.getElementById('login-pw').value;
   var xhr = new XMLHttpRequest();
@@ -566,16 +538,15 @@ function login() {
   xhr.send(payload);
 
   xhr.addEventListener('load', function() {
-    var response = JSON.parse(xhr.responseText);
-    var message = response.message;
-
-    if (message == 404) {
-      console.log(message);
+    if (xhr.status == 404) {
+      warning.textContent = 'Invalid Handle';
     }
-    else if (message == 401) {
-      console.log(message);
+    else if (xhr.status == 401) {
+      warning.textContent = 'Invalid Password';
     }
     else {
+      var response = JSON.parse(xhr.responseText);
+      var message = response.message;
       setMainUser(message);
       hideModal();
       toggleLoggedIn();
@@ -585,8 +556,6 @@ function login() {
 }
 
 function hideModal() {
-  console.log('hideModal');
-
   var body = document.querySelector('body');
   body.className = '';
   var modal = document.getElementById('login-modal');
@@ -594,10 +563,12 @@ function hideModal() {
   var modalFade = document.getElementsByClassName('modal-backdrop')[0];
   modalFade.className = '';
   modal.style = "display:none";
+
+  var warning = document.getElementById('login-warning');
+  warning.textContent = '';
 }
 
 function logout() {
-  console.log('logout');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/logout');
   xhr.send();
@@ -609,8 +580,6 @@ function logout() {
 }
 
 function toggleLoggedIn() {
-  console.log('toggleLoggedIn');
-
   var loginButton = document.getElementById('login-btn');
   if(loggedin) {
     loggedin = false;
@@ -627,8 +596,6 @@ function toggleLoggedIn() {
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
 //calls getProfile and sets it each user the person is following to be populated
 function prepProfile(user) {
-  console.log('prepProfile');
-  console.log(user);
   clearTweets();
   show(profilePageLocation);
   collapseShout();
@@ -644,7 +611,6 @@ function prepProfile(user) {
 }
 
 function showTabs() {
-  console.log('showTabs');
   var feedTab = document.getElementById('feed-tab');
   var favoriteTab = document.getElementById('favorites-tab');
 
@@ -653,7 +619,6 @@ function showTabs() {
 }
 
 function hideTabs() {
-  console.log('hideTabs');
   var feedTab = document.getElementById('feed-tab');
   var favoriteTab = document.getElementById('favorites-tab');
 
@@ -669,8 +634,6 @@ function hideTabs() {
 
 //Gets all tweets, takes the ones posted by user, builds each tweet, and sends it to generateTweet
 function profileTweets(user) {
-  console.log('profileTweets');
-
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/tweets');
   xhr.send();
@@ -693,7 +656,6 @@ function profileTweets(user) {
 
 //Sends a handle to the backend to get the matching user, sends the user to the callback
 function getProfile(handle, method) {
-  console.log('getProfile');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var handle = {handle: handle};
@@ -725,7 +687,6 @@ function pushUser(user) {
 
 //Takes a user, and puts their info into the profile header, calls checkFollowing
 function populateProfile(user){
-  console.log('polulateProfile');
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
   var handle = document.getElementById('handle');
@@ -795,7 +756,6 @@ function toggleFollowing(handle) {
 //Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
   setTimeout(function() {
-    console.log('checkFollowing');
     var follow = document.getElementById('btn-follow-shout');
     follow.className = 'btn btn-primary vspace4';
     follow.dataset.handle = user.handle;
