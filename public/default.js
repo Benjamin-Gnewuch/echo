@@ -1,17 +1,16 @@
 var tweetLocation = document.getElementById('tweet-list');
 var favoriteLocation = document.getElementById('favorite-list');
 var landingTweetLocation = document.getElementById('landing-tweets');
-var landingRow = document.getElementById('first-row');
+var landingRow;
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
 var landingPageLocation = document.getElementById('landing-page');
 var profilePageLocation = document.getElementById('profile-page');
-var rowCounter = 0;
+var rowCounter = 3;
 var mainUser;
 var loggedin = false;
 
 arrive();
-// getTweets(prepLanding)
 
 //Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
@@ -72,6 +71,8 @@ function arrive() {
 
 function prepLanding(tweets) {
   console.log('prepLanding');
+
+  clearLanding();
 
   for(var i = tweets.length-1; i >= 0; i--) {
     matchUser(tweets[i], makeLandingTweet);
@@ -358,10 +359,6 @@ function handleIcon(target) {
 
 function retweet(icon) {
   getTweet(icon.dataset.tweetid, buildTweet);
-
-  // setTimeout(function() {
-  //   prepProfile(mainUser);
-  // },500);
 }
 
 function buildTweet(tweet) {
@@ -372,6 +369,8 @@ function buildTweet(tweet) {
 }
 
 function isFavorite(id) {
+  console.log('isFavorite');
+
   if(mainUser != null) {
     for(var i = 0; i < mainUser.favorites.length; i++) {
       if(mainUser.favorites[i] == id) {
@@ -570,8 +569,9 @@ function logout() {
   xhr.open('GET', '/logout');
   xhr.send();
 
-  mainUser = {};
+  mainUser = null;
   toggleLoggedIn();
+  getTweets(prepLanding);
   show(landingPageLocation);
 }
 
@@ -809,6 +809,13 @@ function clearFollowing() {
   var following = document.getElementById('following');
   while(following.firstChild) {
     following.removeChild(following.firstChild);
+  }
+}
+
+function clearLanding() {
+  console.log('Clear Landing Here');
+  while(landingTweetLocation.firstChild) {
+    landingTweetLocation.removeChild(landingTweetLocation.firstChild);
   }
 }
 
