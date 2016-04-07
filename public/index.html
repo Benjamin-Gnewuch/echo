@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="stylesheet.css">
   </head>
   <body>
+
     <div><!--Navbar-->
-      <nav class="navbar navbar-default vspacenone">
-        <div class="container-fluid">
+      <nav class="navbar navbar-default vspacenone fixed">
+        <div class="container-fluid all">
           <div class="navbar-header">
             <a class="navbar-brand" data-type="button" data-id="home" href="#">Home</a>
           </div>
@@ -66,19 +67,21 @@
       </div>
       <div>
         <div class="page-header text-center">
+          <hr class="featured-tweets-line left">
           <h3>Featured Tweets</h3>
+          <hr class="featured-tweets-line right">
         </div>
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1" id="landing-tweets">
-            <div class="row bordered" id="first-row">
+        <div class="row all">
+          <div class="col-md-12 col-sm-10" id="landing-tweets">
+            <div class="row" id="first-row">
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="profile-page" class="hide">
+    <div id="profile-page" class="hide background">
       <div id="profile-header" class="background-twitter"><!--profile-->
-        <div class="row"><!--profile header-->
+        <div class="row all"><!--profile header-->
           <div class="col-md-12 col-sm-12 col-xs-12 vspace2">
             <div class="row vspace1">
               <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 vspace2">
@@ -101,10 +104,10 @@
         </div>
         <hr>
       </div>
-      <div class="row">
-        <div class="col-md-3 col-sm-3 hoffset3"><!--Following-->
+      <div class="row all">
+        <div class="col-md-3 col-sm-3 hoffset4"><!--Following-->
           <div class="container-fluid">
-            <div class="panel panel-default vspace3 background">
+            <div class="panel panel-default vspace3">
               <div class="text-center">
                 <h5>Following</h5>
               </div>
@@ -144,8 +147,9 @@
               </div>
            </div>
          </div>
-        </div>
-        <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1"><!--Trending-->
+
+          <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1"><!--Trending-->
+          </div>
         </div>
       </div>
     </div>
