@@ -472,12 +472,15 @@ function shout() {
   }
 }
 
+$('#shout-submit').on('click', function() {
+  $('#new-shout').collapse({
+    toggle: false
+  })
+})
+
 function collapseShout() {
-  var inputDiv = document.getElementById('newShoutInput');
   var inputField = document.getElementById('new-shout-text');
   inputField.value = '';
-  inputDiv.className = 'vspace1 collapse';
-  inputDiv.setAttribute('aria-expanded', 'false');
 }
 
 function getTweet(id, callback) {
