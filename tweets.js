@@ -1,20 +1,14 @@
 var faker = require('faker');
 
 var tweetCollection = function tweets() {
-  var tweets = [
-    makeTweet('@skofman', 'This is the first tweet', makeDate(12, 17, 1995, 03, 24), 0, 0),
-    makeTweet('@viethle126', 'This is the second tweet', makeDate(2, 28, 2001, 05, 15), 1, 2),
-    makeTweet('@treezrppl2', 'This is the third tweet', makeDate(7, 21, 2010, 01, 22), 2, 1),
-    makeTweet('@viethle126', 'This is the fourth tweet', makeDate(7, 21, 2010, 01, 22), 3, 1),
-    makeTweet('@skofman', 'This is the fifth tweet', makeDate(7, 21, 2010, 01, 22), 4, 0),
-    makeTweet('@treezrppl2', 'This is the sixth tweet', makeDate(7, 21, 2010, 01, 22), 5, 1),
-    makeTweet('@treezrppl2', 'This is the seventh tweet', makeDate(7, 21, 2010, 01, 22), 6, 2),
-    makeTweet('@viethle126', 'This is the eighth tweet', makeDate(7, 21, 2010, 01, 22), 7, 1),
-    makeTweet('@skofman', 'This is the ninth tweet', makeDate(7, 21, 2010, 01, 22), 8, 2),
-    makeTweet('@skofman', 'This is the tenth tweet', makeDate(7, 21, 2010, 01, 22), 9, 1),
-    makeTweet('@treezrppl2', 'This is the eleventh tweet', makeDate(7, 21, 2010, 01, 22), 10, 0),
-    makeTweet('@bgnewuch', 'lkJSDFBlkjsbfkrbfaf', makeDate(7, 22, 2010, 01, 14), 11, 0)
-  ];
+  var tweets = [];
+
+  function generateTweets(num) {
+    while(num > 0) {
+      tweets.push(makeRandomTweet());
+      num--;
+    }
+  }
 
   function getTweets() {
     return tweets;
@@ -54,6 +48,7 @@ var tweetCollection = function tweets() {
   }
 
   return {
+    generateTweets: generateTweets,
     tweets: getTweets,
     tweet: getTweet,
     incrementFavorite: incrementFavorite,
@@ -80,6 +75,89 @@ function makeDate(month, day, year, hours, minutes) {
     year: year,
     hours: hours,
     minutes: minutes
+  }
+}
+
+function random(val) {
+  return Math.round(Math.random() * val);
+}
+
+var id = 12;
+
+function makeRandomTweet() {
+  var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman'];
+  var index = random(handles.length);
+  var handle = handles[index];
+
+  var text = faker.Lorem.sentence();
+
+  //+ '#' + faker.random.words()
+
+  var date = randomDate();
+
+  var thisID = id;
+  id++;
+
+  return {
+    handle: handle,
+    text: text,
+    date: date,
+    id: id,
+    favoriteCount: 0
+  }
+}
+
+var year = 2010;
+var month = 7;
+var day = 23;
+
+var long = [1,3,5,7,8,10,12];
+var middle = [4,6,9,11];
+var short = [2];
+var monthLength = 'long';
+
+function randomDate() {
+  var hours = random(24);
+  var minutes = random(60);
+
+  var date = (makeDate(month, day, year, hours, minutes));
+
+
+  if(day == 28 && monthLength == 'short') {
+    nextMonth();
+  }
+  else if(day == 30 && monthLength == 'middle') {
+    nextMonth();
+  }
+  else if(day == 31 && monthLength == 'long') {
+    nextMonth();
+  }
+  else {
+    console.log(day);
+    day++;
+    console.log(day);
+  }
+  return date;
+}
+
+function nextMonth() {
+  day = 1;
+  if(month == 12) {
+    month = 1;
+    year++;
+  }
+  else {
+    month++;
+  }
+
+  if(long.indexOf(month) != -1) {
+    monthLength = 'long';
+  }
+  else if(middle.indexOf(month) != -1) {
+    monthLength = 'middle';
+  }
+  else {
+    monthLength = 'short';
   }
 }
 
