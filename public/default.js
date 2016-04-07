@@ -64,7 +64,7 @@ function makeLandingTweet(tweet, user) {
 
 function landingTweetFoundation(tweet) {
   var newRow = document.createElement('div');
-  newRow.className = 'row bordered';
+  newRow.className = 'row';
 
   var col = document.createElement('div');
   col.className = 'col-md-4 col-sm-4';
@@ -125,7 +125,7 @@ function Tweet(name, handle, content, img, date, id, favoriteCount) {
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
 function generateTweet(tweet) {
   var tweetElement = document.createElement('a');
-  tweetElement.className = 'list-group-item tweet background';
+  tweetElement.className = 'list-group-item tweet';
 
   tweetElement.dataset.type = 'tweet';
   tweetElement.dataset.handle = tweet.handle;
@@ -337,7 +337,10 @@ function handleIcon(target) {
 
 function retweet(icon) {
   getTweet(icon.dataset.tweetid, buildTweet);
-  prepProfile(mainUser);
+
+  // setTimeout(function() {
+  //   prepProfile(mainUser);
+  // },500);
 }
 
 function buildTweet(tweet) {
@@ -406,7 +409,7 @@ function prepFavorites(tweet, user) {
   var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id,tweet.favoriteCount);
 
   var tweetElement = document.createElement('a');
-  tweetElement.className = 'list-group-item tweet background';
+  tweetElement.className = 'list-group-item tweet';
 
   tweetElement.dataset.type = 'tweet';
   tweetElement.dataset.handle = tweet.handle;
@@ -432,7 +435,7 @@ function shout() {
 
     collapseShout();
 
-    var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes())
+    var date = makeDate(time.getMonth(), time.getDate(), time.getFullYear(), time.getHours(), time.getMinutes());
     console.log(time);
 
      var shoutToSend = {
