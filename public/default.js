@@ -363,7 +363,7 @@ function retweet(icon) {
 
 function buildTweet(tweet) {
   var newShout = document.getElementById('new-shout-text');
-  newShout.value = 'ECHO: ' + tweet.handle + ' ' + tweet.text;
+  newShout.value = 'ECHO: ' + tweet.handle + ' ' + '"' + tweet.text + '"';
   console.log(newShout);
   shout();
 }
