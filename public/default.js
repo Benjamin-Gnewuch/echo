@@ -359,6 +359,9 @@ function handleIcon(target) {
 
 function retweet(icon) {
   getTweet(icon.dataset.tweetid, buildTweet);
+  // setTimeout(function() {
+  //   prepProfile(mainUser);
+  // },500);
 }
 
 function buildTweet(tweet) {
