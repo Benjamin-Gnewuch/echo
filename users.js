@@ -17,7 +17,7 @@ var userCollection = function users() {
     new User('Viet Le', 1, 'Camp was a lot different for me as a kid', '@viethle126', ['@bgnewuch', '@treezrppl2', '@skofman'], ['@bgnewuch', '@treezrppl2', '@skofman'], 'img/viet.png', 'viet', [1,3,6]),
     new User('Ben Gnewuch', 2, '*incoherent mumbling*', '@bgnewuch', ['@skofman'], ['@viethle126', '@treezrppl2', '@skofman'], 'img/ben.png', 'ben', [5,6,7]),
     new User('Nathan Walston', 3, 'Treezrppl2 guyz', '@treezrppl2', ['@bgnewuch', '@viethle126', '@skofman'], ['@bgnewuch', '@viethle126', '@skofman'], 'img/nathan.png', 'nathan', [1,8,9]),
-    new User('Schlomo Skofman', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126'], ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/schlomo.png', 'schlomo', [2,6,8])
+    new User('Shlomo Kofman', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126'], ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/Shlomo.png', 'Shlomo', [2,6,8])
   ];
 
   function getUsers() {
@@ -38,6 +38,15 @@ var userCollection = function users() {
     return users;
   }
 
+  function getUser(handle) {
+    for(var i = 0; i < users.length; i ++) {
+      if(users[i].handle == handle) {
+        return users[i];
+      }
+    }
+    return 404;
+  }
+
   function login(credentials) {
     for(var i = 0; i < users.length; i++) {
       if(credentials.handle == users[i].handle) {
@@ -53,6 +62,7 @@ var userCollection = function users() {
   }
 
   return {
+    user: getUser,
     users: getUsers,
     change: changeUser,
     authorize: login

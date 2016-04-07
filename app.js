@@ -7,7 +7,21 @@ var userCollection = require('./users.js');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 app.use(express.static('./public'));
+
+app.get('/arrive', function(req, res) {
+  var user;
+  if(req.cookies.loggedin === 'true') {
+    user = userCollection.user(req.cookies.username);
+    res.json({message: user});
+  }
+  else {
+    res.sendStatus(404);
+  }
+});
 
 app.get('/tweets', function(req, res) {
   res.json(tweetCollection.tweets());
@@ -52,7 +66,26 @@ app.post('/pushtweet', jsonParser, function(req, res) {
 });
 
 app.post('/authorize', jsonParser, function(req, res) {
-  res.send({message: userCollection.authorize(req.body)});
+  var response = userCollection.authorize(req.body);
+  console.log('Response: ' + response.handle);
+  if(response == 401) {
+    res.send(response);
+  }
+  else if(response == 404) {
+    res.send(response);
+  }
+  else {
+    res.cookie('loggedin', 'true');
+    res.cookie('username', response.handle);
+    res.send({message: response});
+  }
+})
+
+app.get('/logout', function(req, res) {
+  console.log('Logging out');
+  res.clearCookie('username');
+  res.clearCookie('loggedin');
+  res.send();
 })
 
 app.listen(8080);

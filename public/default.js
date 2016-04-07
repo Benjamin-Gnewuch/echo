@@ -10,10 +10,12 @@ var rowCounter = 0;
 var mainUser;
 var loggedin = false;
 
+arrive();
+// getTweets(prepLanding)
+
 //Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
   mainUser = user;
-
   prepProfile(mainUser);
 }
 
@@ -47,7 +49,26 @@ function makeTweet(tweet, user) {
   generateTweet(tweet);
 }
 
-getTweets(prepLanding);
+function arrive() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/arrive');
+  xhr.send();
+
+  xhr.addEventListener('load', function() {
+    if(xhr.status == 404) {
+      console.log('Trying!!!');
+      getTweets(prepLanding);
+    }
+    else {
+      var response = JSON.parse(xhr.responseText);
+      var user = response.message;
+
+      setMainUser(user);
+      toggleLoggedIn();
+      getTweets(prepFeed);
+    }
+  })
+}
 
 function prepLanding(tweets) {
   console.log('prepLanding');
@@ -545,6 +566,9 @@ function hideModal() {
 
 function logout() {
   console.log('logout');
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/logout');
+  xhr.send();
 
   mainUser = {};
   toggleLoggedIn();
