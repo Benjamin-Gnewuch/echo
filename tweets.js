@@ -89,7 +89,7 @@ function makeRandomTweet() {
   var index = random(handles.length);
   var handle = handles[index];
 
-  var text = faker.Lorem.sentence();
+  var text = faker.Lorem.sentences() + ' #' + faker.random.catch_phrase_descriptor() + faker.random.catch_phrase_noun();
 
   //+ '#' + faker.random.words()
 
@@ -98,12 +98,14 @@ function makeRandomTweet() {
   var thisID = id;
   id++;
 
+  var favoriteCount = faker.random.number(7);
+
   return {
     handle: handle,
     text: text,
     date: date,
     id: id,
-    favoriteCount: 0
+    favoriteCount: favoriteCount
   }
 }
 
@@ -133,9 +135,7 @@ function randomDate() {
     nextMonth();
   }
   else {
-    console.log(day);
     day++;
-    console.log(day);
   }
   return date;
 }
