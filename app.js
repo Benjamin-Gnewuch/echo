@@ -23,6 +23,18 @@ app.get('/arrive', function(req, res) {
   }
 });
 
+app.post('/search', jsonParser, function(req, res) {
+  console.log(req.body);
+  var response = userCollection.user(req.body.search);
+
+  if(response == 404) {
+    res.sendStatus(404);
+  }
+  else {
+    res.json({message: response});
+  }
+});
+
 app.get('/tweets', function(req, res) {
   res.json(tweetCollection.tweets());
 });

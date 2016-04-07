@@ -55,7 +55,6 @@ function arrive() {
 
   xhr.addEventListener('load', function() {
     if(xhr.status == 404) {
-      console.log('Trying!!!');
       getTweets(prepLanding);
     }
     else {
@@ -304,6 +303,9 @@ function handleEvent(target) {
   else if(target.dataset.type == 'icon-btn') {
     handleIcon(target);
   }
+  else if(target.dataset.type == 'submit') {
+    search();
+  }
 }
 
 //Specifically handles any button clicked
@@ -519,6 +521,32 @@ function pushTweet(tweet) {
   xhr.addEventListener('load', function() {
     var response = JSON.parse(xhr.responseText);
     var message = response.message;
+  });
+}
+
+function search() {
+  var searchInput = document.getElementById('search-input');
+  var searchVal = searchInput.value;
+
+  console.log(searchVal);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/search');
+  var payload = JSON.stringify({search: searchVal});
+  console.log(payload);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(payload);
+
+  xhr.addEventListener('load', function() {
+    if(xhr.status == 404) {
+      console.log('No results found');
+    }
+    else {
+      var result = JSON.parse(xhr.responseText);
+      var message = result.message;
+      console.log(message);
+      prepProfile(message);
+    }
   });
 }
 
@@ -816,7 +844,6 @@ function clearFollowing() {
 }
 
 function clearLanding() {
-  console.log('Clear Landing Here');
   while(landingTweetLocation.firstChild) {
     landingTweetLocation.removeChild(landingTweetLocation.firstChild);
   }

@@ -40,7 +40,8 @@ var userCollection = function users() {
 
   function getUser(handle) {
     for(var i = 0; i < users.length; i ++) {
-      if(users[i].handle == handle) {
+      console.log(users[i]);
+      if(users[i].handle == handle.toLowerCase() || users[i].name.toLowerCase() == handle.toLowerCase()) {
         return users[i];
       }
     }

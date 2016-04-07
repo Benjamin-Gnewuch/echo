@@ -23,9 +23,9 @@
             <ul class="nav navbar-nav navbar-right">
               <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Nathan, @treezrppl2">
+                  <input type="text" id='search-input' class="form-control" placeholder="Nathan, @treezrppl2">
                 </div>
-                <button type="submit" class="btn btn-default conceal">Submit</button>
+                <button type="submit" id="search-submit" data-type="submit" data-id="search-btn" class="btn btn-default conceal">Submit</button>
               </form>
               <a class="navbar-brand" id="login-btn" data-type="button" data-id="log" data-toggle="modal" data-target="#login-modal" href="#">Log In</a>
             </ul>
@@ -43,7 +43,7 @@
               <form>
                 <div class="form-group">
                   <label for="login-handle">Handle</label>
-                  <input type="name" class="form-control" id="login-handle" placeholder="@handle">
+                  <input type="name" class="form-control" id="login-handle" placeholder="@viethle126">
                 </div>
                 <div class="form-group">
                   <label for="login-pw">Password</label>
