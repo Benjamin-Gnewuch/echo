@@ -85,7 +85,7 @@ function random(val) {
 var id = 0;
 
 function makeRandomTweet() {
-  var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman'];
+  var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane'];
   var index = random(handles.length);
   var handle = handles[index];
 
