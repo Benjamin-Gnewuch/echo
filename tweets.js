@@ -96,7 +96,7 @@ function makeRandomTweet() {
   var thisID = id;
   id++;
 
-  var favoriteCount = faker.random.number(7);
+  var favoriteCount = faker.random.number(7) +1;
 
   return {
     handle: handle,
