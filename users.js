@@ -13,10 +13,14 @@ var userCollection = function users() {
   var users = [
     new User('Viet Le', 1, 'Camp was a lot different for me as a kid', '@viethle126',
     ['@bgnewuch', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'], 'img/viet.png', 'viet', [1,3,6]),
-    new User('Ben Gnewuch', 2, '*incoherent mumbling*', '@bgnewuch', ['@viethle126', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'], 'img/ben.png', 'ben', [5,6,7]),
+    new User('Ben Gnewuch', 2, '*incoherent mumbling*', '@bgnewuch', ['@viethle126', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'],
+    'img/ben.png', 'ben', [5,6,7]),
     new User('Nathan Walston', 3, 'Treezrppl2 guyz', '@treezrppl2', ['@bgnewuch', '@viethle126', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'],
     'img/nathan.png', 'nathan', [1,8,9]),
-    new User('Shlomo Kofman', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane'], 'img/alysia.png', 'alysia', [2,6,8]),
+    new User('Shlomo Kofman', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane'],
+    'img/Shlomo.png', 'shlomo', [3,7,22]),
+    new User('Alysia Saquilabon', 5, '', '@alysiasaquil', ['@bgnewuch', '@treezrppl2', '@skofman', '@viethle126', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'], 'img/alysia.png', 'alysia',
+    [2,6,8]),
     new User('Arun Gopul', 6, '', '@arunpaulgopul', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/arun.png', 'arun', [2,6,8]),
     new User('Andrew Valasquez', 7, '', '@91ajames', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/andrew.png', 'andrew', [2,6,8]),
     new User('Brian Walen', 8, '', '@brianwalen', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/brian.png', 'brian', [2,6,8]),
@@ -28,6 +32,7 @@ var userCollection = function users() {
     new User('Niral Pokal', 14, '', '@niralpokal', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/niral.png', 'niral', [2,6,8]),
     new User('Tom Putsawatanachai', 15, '', '@tputs001', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/tom.png', 'tom', [2,6,8]),
     new User('Zane DeFazio', 16, '', '@zane', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/zane.png', 'zane', [2,6,8]),
+    new User('Ron Perris', 17, 'All Code All Day', '@ronperris1234242', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/ron.jpg', 'ron', [1,2,3,4,5,6,55,77])
   ];
 
   function getUsers() {

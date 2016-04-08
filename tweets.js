@@ -58,13 +58,14 @@ var tweetCollection = function tweets() {
 
 }
 
-function makeTweet(handle, text, date, id, favoriteCount) {
+function makeTweet(handle, text, date, id, favoriteCount, image) {
   return {
     handle: handle,
     text: text,
     date: date,
     id: id,
-    favoriteCount: favoriteCount
+    favoriteCount: favoriteCount,
+    image: image
   }
 }
 
@@ -85,7 +86,7 @@ function random(val) {
 var id = 0;
 
 function makeRandomTweet() {
-  var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane'];
+  var handles = ['@viethle126', '@bgnewuch', '@treezrppl2', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane', '@ronperris1234242'];
   var index = random(handles.length);
   var handle = handles[index];
 
@@ -98,12 +99,28 @@ function makeRandomTweet() {
 
   var favoriteCount = faker.random.number(7) +1;
 
+  var images = [faker.Image.avatar(), faker.Image.imageUrl(), faker.Image.abstractImage(), faker.Image.animals(), faker.Image.business(), faker.Image.cats(), faker.Image.city(), faker.Image.food(), faker.Image.nightlife(), faker.Image.people(), faker.Image.nature(),   faker.Image.sports(), faker.Image.technics(), faker.Image.transport(), false];
+
+  var randomImg;
+
+  if(random(4) == 1) {
+    randomImg = images[random(images.length)];
+  }
+  else {
+    image = false;
+  }
+
+  if(randomImg == undefined) {
+    randomImg = false;
+  }
+
   return {
     handle: handle,
     text: text,
     date: date,
     id: id,
-    favoriteCount: favoriteCount
+    favoriteCount: favoriteCount,
+    image: randomImg
   }
 }
 

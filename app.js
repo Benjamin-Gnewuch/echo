@@ -4,7 +4,9 @@ var app = express();
 var tweetCollection = require('./tweets.js');
 var userCollection = require('./users.js');
 
-tweetCollection.generateTweets(50);
+tweetCollection.generateTweets(100);
+
+console.log(tweetCollection.tweets());
 
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();

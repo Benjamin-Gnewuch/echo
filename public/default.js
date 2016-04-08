@@ -1,12 +1,14 @@
 var tweetLocation = document.getElementById('tweet-list');
 var favoriteLocation = document.getElementById('favorite-list');
-var landingTweetLocation = document.getElementById('landing-tweets');
+var landingTweetLocation1 = document.getElementById('landing-tweets-1');
+var landingTweetLocation2 = document.getElementById('landing-tweets-2');
+var landingTweetLocation3 = document.getElementById('landing-tweets-3');
 var landingRow;
 var lineBreak = document.createElement('br');
 var loginSubmit = document.getElementById('login-submit');
 var landingPageLocation = document.getElementById('landing-page');
 var profilePageLocation = document.getElementById('profile-page');
-var rowCounter = 3;
+var rowCounter = 1;
 var mainUser;
 var loggedin = false;
 
@@ -14,12 +16,14 @@ arrive();
 
 //Used for testing, main user is the loggedin user until login is added
 function setMainUser(user) {
+  //console.log('setMainUser');
   mainUser = user;
   prepProfile(mainUser);
 }
 
 //Gets ALL tweets
 function getTweets(method) {
+  //console.log('getTweets');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/tweets');
   xhr.send();
@@ -31,6 +35,7 @@ function getTweets(method) {
 }
 
 function prepFeed(tweets) {
+  //console.log('prepFeed');
   clearTweets();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -43,7 +48,8 @@ function prepFeed(tweets) {
 
 //Creates a new tweet, combining data from tweets and user, calls generateTweet
 function makeTweet(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount);
+  //console.log('makeTweet');
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount, tweet.image);
   generateTweet(tweet);
 }
 
@@ -68,6 +74,7 @@ function arrive() {
 }
 
 function prepLanding(tweets) {
+  //console.log('prepLanding');
   clearLanding();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -76,27 +83,29 @@ function prepLanding(tweets) {
 }
 
 function makeLandingTweet(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount);
+  //console.log('makeLandingTweet');
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount, tweet.image);
   landingTweetFoundation(tweet);
 }
 
 function landingTweetFoundation(tweet) {
-  var newRow = document.createElement('div');
-  newRow.className = 'row';
+  console.log('landingTweetFoundation');
 
-  var col = document.createElement('div');
-  col.className = 'col-md-4 col-sm-4';
+   var col = document.createElement('div');
+   col.className = 'col-md-12 col-sm-12';
 
-  if(rowCounter == 3) {
-    rowCounter = 0;
-    landingRow = newRow;
-    landingTweetLocation.appendChild(newRow);
-    newRow.appendChild(col);
+  if(rowCounter == 1) {
+    landingTweetLocation1.appendChild(col);
+    rowCounter = 2;
   }
-  else {
-    landingRow.appendChild(col);
+  else if(rowCounter == 2) {
+    landingTweetLocation2.appendChild(col);
+    rowCounter = 3;
   }
-  rowCounter++;
+  else if(rowCounter == 3) {
+    landingTweetLocation3.appendChild(col);
+    rowCounter = 1;
+  }
 
   var tweetPanel = document.createElement('div');
   tweetPanel.className = 'panel panel-default landing-tweet';
@@ -114,6 +123,7 @@ function landingTweetFoundation(tweet) {
 
 //Gets users from backend, matches a user to the tweet, then calls callback
 function matchUser(tweet, callback) {
+  //console.log('matchUser');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/users');
   xhr.send();
@@ -130,7 +140,7 @@ function matchUser(tweet, callback) {
 }
 
 //Tweet constructor
-function Tweet(name, handle, content, img, date, id, favoriteCount) {
+function Tweet(name, handle, content, img, date, id, favoriteCount, image) {
   this.name = name;
   this.handle = handle;
   this.content = content;
@@ -138,10 +148,12 @@ function Tweet(name, handle, content, img, date, id, favoriteCount) {
   this.date = date;
   this.id = id;
   this.favoriteCount = favoriteCount;
+  this.image = image;
 }
 
 //Takes in a tweet, sets up location in DOM, then calls tweetContent
 function generateTweet(tweet) {
+  //console.log('generateTweet');
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item tweet';
 
@@ -154,6 +166,22 @@ function generateTweet(tweet) {
 
 //Creates a media object and fills it with a tweet's data, appends to the DOM
 function tweetContent(location, tweet) {
+  //console.log('tweetContent');
+  console.log(tweet);
+  if(tweet.image == false) {
+    console.log('no image');
+  }
+  else {
+    var thumbnail = document.createElement('div');
+    thumbnail.className = 'thumbnail';
+
+    var image = document.createElement('img');
+    image.src = tweet.image;
+
+    thumbnail.appendChild(image);
+    location.appendChild(thumbnail);
+  }
+
   var media = document.createElement('div');
   media.className = 'media';
   location.appendChild(media);
@@ -249,6 +277,7 @@ function tweetButtons(location, tweet) {
 
 //Takes in the date from a tweet, and creates a Date object to be returned
 function setDate(date) {
+  //console.log('setDate');
   var newDate = new Date();
   newDate.setMonth(date.month, date.day);
   newDate.setYear(date.year);
@@ -259,6 +288,7 @@ function setDate(date) {
 
 //Clears all tweets in the DOM
 function clearTweets() {
+  //console.log('clearTweets');
   var tweets = document.getElementById('tweet-list');
   while(tweets.firstChild) {
     tweets.removeChild(tweets.firstChild);
@@ -349,19 +379,19 @@ function handleIcon(target) {
 }
 
 function retweet(icon) {
+  //console.log('retweet');
   getTweet(icon.dataset.tweetid, buildTweet);
-  // setTimeout(function() {
-  //   prepProfile(mainUser);
-  // },500);
 }
 
 function buildTweet(tweet) {
+  //console.log('buildTweet');
   var newShout = document.getElementById('new-shout-text');
   newShout.value = 'ECHO: ' + tweet.handle + ' ' + '"' + tweet.text + '"';
   shout();
 }
 
 function isFavorite(id) {
+  //console.log('isFavorite');
   if(mainUser != null) {
     for(var i = 0; i < mainUser.favorites.length; i++) {
       if(mainUser.favorites[i] == id) {
@@ -373,6 +403,7 @@ function isFavorite(id) {
 }
 
 function favorite(icon) {
+  //console.log('favorite');
   var star = icon.firstChild;
   var badge = star.nextSibling;
 
@@ -395,6 +426,7 @@ function favorite(icon) {
 }
 
 function unfavorite(id) {
+  //console.log('unfavorite');
   for(var i = 0; i < mainUser.favorites.length; i++) {
     if(mainUser.favorites[i] == id) {
       mainUser.favorites.splice(i,1);
@@ -403,6 +435,7 @@ function unfavorite(id) {
 }
 
 function getFavorites(tweets) {
+  //console.log('getFavorites');
   clearFavorites();
 
   for(var i = tweets.length-1; i >= 0; i--) {
@@ -413,7 +446,8 @@ function getFavorites(tweets) {
 }
 
 function prepFavorites(tweet, user) {
-  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id,tweet.favoriteCount);
+  //console.log('prepFavorites');
+  var tweet = new Tweet(user.name, tweet.handle, tweet.text, user.img, tweet.date, tweet.id, tweet.favoriteCount, tweet.image);
 
   var tweetElement = document.createElement('a');
   tweetElement.className = 'list-group-item tweet';
@@ -426,12 +460,14 @@ function prepFavorites(tweet, user) {
 }
 
 function clearFavorites() {
+  //console.log('clearFavorites');
   while(favoriteLocation.firstChild) {
     favoriteLocation.removeChild(favoriteLocation.firstChild);
   }
 }
 
 function shout() {
+  //console.log('shout');
   var newShout = document.getElementById('new-shout-text');
   if(newShout.value != "") {
     var time = new Date();
@@ -457,12 +493,14 @@ $('#shout-submit').on('click', function() {
 })
 
 function collapseShout() {
+  //console.log('collapseShout');
   var inputDiv = document.getElementById('newShoutInput');
   inputDiv.className = 'vspace1 collapse';
   inputDiv.setAttribute('aria-expanded', 'false');
 }
 
 function getTweet(id, callback) {
+  //console.log('gettweet');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/gettweet');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -478,6 +516,7 @@ function getTweet(id, callback) {
 }
 
 function updateTweet(direction, id) {
+  //console.log('updateTweet');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/updatefavorite');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -492,6 +531,7 @@ function updateTweet(direction, id) {
 }
 
 function pushTweet(tweet) {
+  //console.log('pushTweet');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/pushtweet');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -505,6 +545,7 @@ function pushTweet(tweet) {
 }
 
 function search() {
+  //console.log('search');
   var searchInput = document.getElementById('search-input');
   var searchVal = searchInput.value;
 
@@ -527,6 +568,7 @@ function search() {
 
 //Sends credentials to backend to see if they match a user, will either reply with 401, 404, or user object
 function login() {
+  //console.log('login');
   var warning = document.getElementById('login-warning');
   var handle = document.getElementById('login-handle').value;
   var pw = document.getElementById('login-pw').value;
@@ -556,6 +598,7 @@ function login() {
 }
 
 function hideModal() {
+  //console.log(hideModal);
   var body = document.querySelector('body');
   body.className = '';
   var modal = document.getElementById('login-modal');
@@ -569,17 +612,20 @@ function hideModal() {
 }
 
 function logout() {
+  //console.log('logout');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/logout');
   xhr.send();
 
   mainUser = null;
   toggleLoggedIn();
+  hideTabs();
   getTweets(prepLanding);
   show(landingPageLocation);
 }
 
 function toggleLoggedIn() {
+  //console.log('toggleLoggedIn');
   var loginButton = document.getElementById('login-btn');
   if(loggedin) {
     loggedin = false;
@@ -596,6 +642,7 @@ function toggleLoggedIn() {
 //Calls: clearTweets, clearFollowing, populateProfile, and profileTweets
 //calls getProfile and sets it each user the person is following to be populated
 function prepProfile(user) {
+  //console.log('prepProfile');
   clearTweets();
   show(profilePageLocation);
   collapseShout();
@@ -611,6 +658,7 @@ function prepProfile(user) {
 }
 
 function showTabs() {
+  //console.log('showTabs');
   var feedTab = document.getElementById('feed-tab');
   var favoriteTab = document.getElementById('favorites-tab');
 
@@ -619,6 +667,7 @@ function showTabs() {
 }
 
 function hideTabs() {
+  //console.log('hideTabs');
   var feedTab = document.getElementById('feed-tab');
   var favoriteTab = document.getElementById('favorites-tab');
 
@@ -634,6 +683,7 @@ function hideTabs() {
 
 //Gets all tweets, takes the ones posted by user, builds each tweet, and sends it to generateTweet
 function profileTweets(user) {
+  //console.log('profileTweets');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/tweets');
   xhr.send();
@@ -656,6 +706,7 @@ function profileTweets(user) {
 
 //Sends a handle to the backend to get the matching user, sends the user to the callback
 function getProfile(handle, method) {
+  //console.log('getProfile');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/getprofile');
   var handle = {handle: handle};
@@ -673,6 +724,7 @@ function getProfile(handle, method) {
 
 //Takes a user and sends them to the backend to update database
 function pushUser(user) {
+  //console.log('pushUser');
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/pushuser');
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -686,7 +738,8 @@ function pushUser(user) {
 }
 
 //Takes a user, and puts their info into the profile header, calls checkFollowing
-function populateProfile(user){
+function populateProfile(user) {
+  //console.log('populateProfile');
   var profPic = document.getElementById('profile-img');
   var username = document.getElementById('username');
   var handle = document.getElementById('handle');
@@ -702,6 +755,7 @@ function populateProfile(user){
 
 //Takes a user, and populates a location in the Following box in the DOM
 function populateFollowing(user) {
+  //console.log('populateFollowing');
   var location = document.getElementById('following');
   location.className = 'list-group';
 
@@ -744,6 +798,7 @@ function populateFollowing(user) {
 
 //Takes a handle, if user is being followed, unfollow, if not, then add to follow
 function toggleFollowing(handle) {
+  //console.log('toggleFollowing');
   for(var i = 0; i < mainUser.following.length; i++) {
     if(mainUser.following[i] == handle) {
       mainUser.following.splice(i,1);
@@ -755,6 +810,7 @@ function toggleFollowing(handle) {
 
 //Takes a user, decide 'Follow' button text based on if mainUser is following them
 function checkFollowing(user) {
+  //console.log('checkFollowing');
   setTimeout(function() {
     var follow = document.getElementById('btn-follow-shout');
     follow.className = 'btn btn-primary vspace4';
@@ -799,6 +855,7 @@ function checkFollowing(user) {
 
 //Clears the DOM of all the users followed by current profile
 function clearFollowing() {
+  //console.log('clearFollowing');
   var following = document.getElementById('following');
   while(following.firstChild) {
     following.removeChild(following.firstChild);
@@ -806,8 +863,15 @@ function clearFollowing() {
 }
 
 function clearLanding() {
-  while(landingTweetLocation.firstChild) {
-    landingTweetLocation.removeChild(landingTweetLocation.firstChild);
+  //console.log('clearLanding');
+  while(landingTweetLocation1.firstChild) {
+    landingTweetLocation1.removeChild(landingTweetLocation1.firstChild);
+  }
+  while(landingTweetLocation2.firstChild) {
+    landingTweetLocation2.removeChild(landingTweetLocation2.firstChild);
+  }
+  while(landingTweetLocation3.firstChild) {
+    landingTweetLocation3.removeChild(landingTweetLocation3.firstChild);
   }
 }
 
