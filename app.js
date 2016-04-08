@@ -6,8 +6,6 @@ var userCollection = require('./users.js');
 
 tweetCollection.generateTweets(100);
 
-console.log(tweetCollection.tweets());
-
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
@@ -28,7 +26,6 @@ app.get('/arrive', function(req, res) {
 });
 
 app.post('/search', jsonParser, function(req, res) {
-  console.log(req.body);
   var response = userCollection.user(req.body.search);
 
   if(response == 404) {
@@ -65,7 +62,6 @@ app.post('/pushuser', jsonParser, function(req, res) {
 });
 
 app.post('/updatefavorite', jsonParser, function(req, res) {
-  console.log(req.body);
   var tweets;
   if(req.body.direction == 'increase') {
     tweets = tweetCollection.incrementFavorite(req.body.id);
@@ -83,7 +79,6 @@ app.post('/pushtweet', jsonParser, function(req, res) {
 
 app.post('/authorize', jsonParser, function(req, res) {
   var response = userCollection.authorize(req.body);
-  console.log('Response: ' + response.handle);
   if(response == 401) {
     res.sendStatus(401);
   }
@@ -98,7 +93,6 @@ app.post('/authorize', jsonParser, function(req, res) {
 })
 
 app.get('/logout', function(req, res) {
-  console.log('Logging out');
   res.clearCookie('username');
   res.clearCookie('loggedin');
   res.send();
