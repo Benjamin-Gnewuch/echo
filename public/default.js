@@ -164,6 +164,7 @@ function tweetContent(location, tweet) {
 
     var image = document.createElement('img');
     image.src = tweet.image;
+    image.dataset.type = 'picture';
 
     thumbnail.appendChild(image);
     location.appendChild(thumbnail);
@@ -311,6 +312,9 @@ function handleEvent(target) {
   }
   else if(target.dataset.type == 'submit') {
     search();
+  }
+  else if(target.dataset.type == 'picture') {
+    showPicModal(target);
   }
 }
 
@@ -465,6 +469,12 @@ $('#shout-submit').on('click', function() {
     toggle: false
   });
 })
+
+function showPicModal(target) {
+  var modalPic = document.getElementById('profile-img-big');
+  modalPic.src = target.src;
+  $('#profile-pic-modal').modal('show');
+}
 
 function collapseShout() {
   var inputDiv = document.getElementById('newShoutInput');

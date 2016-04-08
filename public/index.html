@@ -12,7 +12,13 @@
     <link rel="stylesheet" href="stylesheet.css">
   </head>
   <body>
-
+    <div id="profile-pic-modal" class="modal fade bs-example-modal-lg vspace4" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-size">
+          <img id="profile-img-big" class="modal-size img-rounded">
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <div><!--Navbar-->
       <nav class="navbar navbar-default vspacenone fixed">
         <div class="container-fluid all">
@@ -69,7 +75,7 @@
       <div>
         <div class="page-header text-center">
           <hr class="featured-tweets-line left">
-          <h3>Featured Tweets</h3>
+          <h3 class="text-muted">Featured Tweets</h3>
           <hr class="featured-tweets-line right">
         </div>
         <div class="row all">
@@ -88,7 +94,7 @@
           <div class="col-md-12 col-sm-12 col-xs-12 vspace2">
             <div class="row vspace1">
               <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 vspace2">
-                <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-rounded img-responsive" alt="User profile picture" id="profile-img">
+                <img src='https://www.nonehub.com/images/defaultUserAvatar.jpg' class="img-rounded img-responsive following" data-type="picture" alt="User profile picture" id="profile-img">
               </div>
               <div class="col-md-5 col-sm-5 col-xs-5">
                 <div class="row">

@@ -32,8 +32,11 @@
   cursor: pointer;
 }
 
-.tweet-image {
-
+.modal-size {
+  height: 750px;
+  width: 750px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .tweet-icon {
@@ -199,7 +202,7 @@ body {
 }
 
 .vspace3 {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .vspace4 {
