@@ -103,7 +103,7 @@ function makeRandomTweet() {
 
   var randomImg;
 
-  if(random(4) == 1) {
+  if(random(3) == 1) {
     randomImg = images[random(images.length)];
   }
   else {

@@ -167,9 +167,7 @@ function generateTweet(tweet) {
 //Creates a media object and fills it with a tweet's data, appends to the DOM
 function tweetContent(location, tweet) {
   //console.log('tweetContent');
-  console.log(tweet);
   if(tweet.image == false) {
-    console.log('no image');
   }
   else {
     var thumbnail = document.createElement('div');
