@@ -33,8 +33,10 @@
 }
 
 .modal-size {
-  height: 750px;
-  width: 750px;
+  /*height: 750px;
+  width: 750px;*/
+  height: 100%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
