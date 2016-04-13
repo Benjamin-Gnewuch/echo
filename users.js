@@ -18,7 +18,7 @@ var userCollection = function users() {
     new User('Nathan Walston', 3, 'Treezrppl2 guyz', '@treezrppl2', ['@bgnewuch', '@viethle126', '@skofman', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'],
     'img/nathan.png', 'nathan', [1,8,9]),
     new User('Shlomo Kofman', 4, 'You speak, I skof', '@skofman', ['@bgnewuch', '@treezrppl2', '@viethle126', '@alysiasaquil', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@mike.field', '@niralpokal', '@tputs001', '@zane'],
-    'img/Shlomo.png', 'shlomo', [3,7,22]),
+    'img/shlomo.png', 'shlomo', [3,7,22]),
     new User('Alysia Saquilabon', 5, '', '@alysiasaquil', ['@bgnewuch', '@treezrppl2', '@skofman', '@viethle126', '@91ajames', '@arunpaulgopul', '@brianwalen', '@metcalfec', '@coreysl', '@little78926', '@jnguyen', '@mike.field', '@niralpokal', '@tputs001', '@zane'], 'img/alysia.png', 'alysia',
     [2,6,8]),
     new User('Arun Gopul', 6, '', '@arunpaulgopul', ['@bgnewuch', '@treezrppl2', '@viethle126'], 'img/arun.png', 'arun', [2,6,8]),
