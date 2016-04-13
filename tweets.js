@@ -1,4 +1,4 @@
-var faker = require('faker');
+var faker = require('Faker');
 
 var tweetCollection = function tweets() {
   var tweets = [];
