@@ -99,7 +99,7 @@ function makeRandomTweet() {
 
   var favoriteCount = faker.random.number(7) +1;
 
-  var images = [faker.Image.avatar(), faker.Image.imageUrl(), faker.Image.abstractImage(), faker.Image.animals(), faker.Image.business(), faker.Image.cats(), faker.Image.city(), faker.Image.food(), faker.Image.nightlife(), faker.Image.people(), faker.Image.nature(),   faker.Image.sports(), faker.Image.technics(), faker.Image.transport(), false];
+  var images = [, faker.Image.imageUrl(), faker.Image.abstractImage(), faker.Image.animals(), faker.Image.business(), faker.Image.cats(), faker.Image.city(), faker.Image.food(), faker.Image.nightlife(), faker.Image.people(), faker.Image.nature(),   faker.Image.sports(), faker.Image.technics(), faker.Image.transport(), false];
 
   var randomImg;
 
