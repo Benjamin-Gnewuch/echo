@@ -17,3 +17,6 @@
 
 ### User Profile Page
 ![User Profile Page](https://github.com/Benjamin-Gnewuch/echo/blob/master/public/img/screenshots/other-user.png)
+
+### User can Favorite a Shout (Tweet)
+![Favorite Shout] (https://github.com/Benjamin-Gnewuch/echo/blob/master/public/img/screenshots/favorite.png)
